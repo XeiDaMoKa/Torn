@@ -1,0 +1,32 @@
+{
+  "name": "Xei ● Torn • Pop-ups",
+  "description": "Torn.com Pop-ups",
+  "version": "0.4.0",
+  "author": "XeiDaMoKa [2373510]",
+  "manifest_version": 3,
+
+  "icons": {
+    "16": "Icons/icon16.png",
+    "32": "Icons/icon32.png",
+    "48": "Icons/icon48.png",
+    "128": "Icons/icon128.png"
+  },
+
+  "action": {
+    "default_title": "Torn ● Pop-ups • Settings",
+    "default_popup": "/popup.html"
+  },
+
+  "host_permissions": ["*://*.torn.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.torn.com/*"],
+        "js": [
+          "jquery.js",
+          "Pop-ups/Points.js",
+          "Pop-ups/Vault.js",
+          "Pop-ups/Gym.js",
+          "Pop-ups/Crimes.js"]
+    }
+  ]
+}

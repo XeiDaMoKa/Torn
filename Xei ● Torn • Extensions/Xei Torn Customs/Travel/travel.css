@@ -1,0 +1,111 @@
+
+
+
+    /* Hide Left Gradient */
+
+.fade-left {
+
+    display: none;
+}
+
+
+
+    /* Hide Light Gradient */
+
+.fade-right {
+
+    display: none;
+}
+
+
+
+    /* Hide Popup Info */
+
+.popup-info {
+
+    display: none;
+}
+
+
+
+    /* Text Color */
+
+.flight-info {
+
+    color: #f50 !important;
+}
+
+
+
+    /* Hide Lines */
+
+hr {
+
+    display: none;
+}
+
+
+
+    /* PC text Color */
+
+#pc {
+
+    color: #f50 !important;
+}
+
+
+
+    /* Travel Table Color */
+
+.tt-travel {
+
+    color: #f50 !important;
+}
+
+
+
+    /* Timer Color */
+
+.d .travel-agency-travelling .left-bar , .d .travel-agency-travelling .right-bar , .d .travel-agency-travelling .middle-bar {
+
+    background: #1c0028 !important;
+}
+
+
+
+    /* Timer Color */
+
+.d .travel-agency-travelling .blue-bar-start , .d .travel-agency-travelling .blue-bar-middle {
+
+    background: #f50 !important;
+}
+
+
+
+    /* Arrow Color */
+
+.d .travel-agency-travelling .blue-bar-arrow {
+
+    width: 5px !important;
+    background-image: none !important;
+    background: #f50 !important;
+}
+
+
+
+    /* Clouds Size */
+
+div div .stage{
+
+    transform:scale(1.051);
+}
+
+
+
+    /* Plane Skin Torn to */
+
+#plane {
+    content: url('https://i.imgur.com/T66sUDO.png') !important;
+}
+
+
