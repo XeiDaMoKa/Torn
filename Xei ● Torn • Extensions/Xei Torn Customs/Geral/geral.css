@@ -1,0 +1,176 @@
+
+
+
+  /* Background Color */
+
+body {
+
+  background-color: #1c0028 !important;
+}
+
+
+
+  /* Titles Color */
+
+h4 {
+
+  color : #f50 !important ;
+
+}
+
+
+
+  /* Color of SubTitles */
+
+.line-h24 {
+
+  color : #f50 !important ;
+}
+
+
+
+  /* Hide 'Information' , 'Areas' & 'Lists' Titles */
+
+.toggle-block___oKpdF .header___RpWar {
+
+  display : none !important ;
+}
+
+
+
+  /* Hide 'Name:' , 'Money:' , 'Level:' & 'Points:' / Merits & Level */
+
+.menu-name___DvWEr , .name___ChDL3 , .point-block___rQyUK:nth-child(2), .point-block___rQyUK:nth-child(4) , #pointsPoints {
+
+  display : none !important ;
+
+}
+
+
+
+  /* Hide Bar Titles */
+
+.bar-name___cHBD8 , .bar-name___EcY8p  {
+
+  display : none !important ;
+
+}
+
+
+
+/* Color of 'Energy' */
+
+#barEnergy .bar-value___NTdce:nth-child(2) {
+
+  padding-left : 2px !important ;
+
+  color : #93f707 !important ;
+
+  font-size : 12.5px !important ;
+}
+
+
+
+/* Color of 'Nerve' */
+
+#barNerve .bar-value___NTdce:nth-child(2) {
+
+  padding-left : 2px !important ;
+
+  color : #ff6a00  !important ;
+
+  font-size : 12.5px !important ;
+}
+
+
+
+/* Color of 'Happy' */
+
+#barHappy .bar-value___NTdce:nth-child(2) {
+
+  padding-left : 2.5px ;
+
+  color : #e6e86d ;
+
+  font-size : 12.5px ;
+}
+
+
+
+
+/* Color of 'Life' */
+
+#barLife .bar-value___NTdce:nth-child(2) {
+
+  padding-left : 1px !important ;
+
+  color : #6587ff ;
+
+  font-size : 12.5px !important ;
+}
+
+
+
+/* Center 'XeiDaMoKa' , 'Money' , 'Points' Container */
+
+.menu-info-row___YG31c , .point-block___rQyUK:first-child , .point-block___rQyUK.tt-points-value {
+
+  text-align : center !important ;
+}
+
+
+
+/* Color of 'XeiDaMoKa' */
+
+.menu-value___gLaLR {
+
+  color : rgb(250 , 75 , 0) !important ;
+
+  font-size : 15px !important ;
+
+  font-weight : 750 !important
+}
+
+
+
+/* Color of 'Money' */
+
+#user-money {
+
+  color : rgb(0,175,0) !important ;
+
+  font-size : 16px !important ;
+
+  font-weight : 750 !important
+}
+
+
+
+/* Color of 'Points' */
+
+.value___mHNGb {
+
+  color : rgb(0,100,200) !important ;
+
+  font-size : 16px !important ;
+
+  font-weight : 750 !important
+}
+
+
+
+/* Color of Headers , Links & Server */
+
+.d .t-blue-cont a , .link-text , .server-name___DSWCP {
+
+  color : rgb(0,175,225) !important ;
+}
+
+
+
+  /* Logo Image */
+
+.webp-support div.logo {
+    background-image: url(https://i.imgur.com/OzC08YJ.png) !important;
+}
+
