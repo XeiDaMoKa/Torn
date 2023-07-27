@@ -7,7 +7,7 @@ if ($('#racingupdatesnew .properties-wrap li:eq(0)')
 
   .attr('aria-description')
 
-    .includes('85.33')
+    .includes('85.333333333333')
 
       && $('#racingupdatesnew .properties-wrap li:eq(5)')
 
@@ -49,7 +49,7 @@ $('#lbr-2373510 img , .large')
 
   .attr('aria-description')
 
-    .includes('85.33')
+    .includes('85.333333333333')
 
       && $('#racingupdatesnew .properties-wrap li:eq(4)')
 
