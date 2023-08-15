@@ -29,7 +29,7 @@ h4 {
 
 
 
-  /* Hide 'Information' , 'Areas' & 'Lists' Titles */
+  /* Hide 'Information' , 'Areas' & 'Lists' Headers */
 
 .toggle-block___oKpdF .header___RpWar {
 
@@ -39,18 +39,21 @@ h4 {
 
 
   /* Hide 'Name:' , 'Money:' , 'Level:' & 'Points:' / Merits & Level */
+.menu-name___DvWEr,
+.point-block___rQyUK:nth-of-type(2),
+.point-block___rQyUK:nth-of-type(4),
+.name___ChDL3,
+.use___wM1PI {
+    display: none !important;
+  }
 
-.menu-name___DvWEr , .name___ChDL3 , .point-block___rQyUK:nth-child(2), .point-block___rQyUK:nth-child(4) , #pointsPoints {
-
-  display : none !important ;
-
-}
 
 
 
   /* Hide Bar Titles */
 
-.bar-name___cHBD8 , .bar-name___EcY8p  {
+.bar-name___cHBD8 ,
+.bar-name___EcY8p  {
 
   display : none !important ;
 
@@ -60,7 +63,7 @@ h4 {
 
 /* Color of 'Energy' */
 
-#barEnergy .bar-value___NTdce:nth-child(2) {
+.energy___hsTnO .bar-value___NTdce {
 
   padding-left : 2px !important ;
 
@@ -73,7 +76,7 @@ h4 {
 
 /* Color of 'Nerve' */
 
-#barNerve .bar-value___NTdce:nth-child(2) {
+.nerve___AyYv_ .bar-value___NTdce {
 
   padding-left : 2px !important ;
 
@@ -86,7 +89,7 @@ h4 {
 
 /* Color of 'Happy' */
 
-#barHappy .bar-value___NTdce:nth-child(2) {
+.happy___g3XML .bar-value___NTdce {
 
   padding-left : 2.5px ;
 
@@ -100,9 +103,9 @@ h4 {
 
 /* Color of 'Life' */
 
-#barLife .bar-value___NTdce:nth-child(2) {
+.life___PlnzK .bar-value___NTdce {
 
-  padding-left : 1px !important ;
+  padding-left : 2px !important ;
 
   color : #6587ff ;
 
@@ -113,10 +116,13 @@ h4 {
 
 /* Center 'XeiDaMoKa' , 'Money' , 'Points' Container */
 
-.menu-info-row___YG31c , .point-block___rQyUK:first-child , .point-block___rQyUK.tt-points-value {
+.menu-info-row___YG31c,
+.point-block___rQyUK {
 
   text-align : center !important ;
 }
+
+
 
 
 
@@ -159,6 +165,29 @@ h4 {
 
 
 
+.tt-sidebar-information , .tt-sidebar-information-divider.tt-delimiter {
+
+  display : none ;
+}
+
+
+
+#companyAddictionLevel span, .countdown {
+
+    float: right ;
+
+    color: #888888
+}
+
+.bar-value___uxnah {
+  padding-left: 2.5px
+}
+.tt-sidebar-information .title {
+  padding-left: 3px
+}
+
+
+
 /* Color of Headers , Links & Server */
 
 .d .t-blue-cont a , .link-text , .server-name___DSWCP {
@@ -171,6 +200,6 @@ h4 {
   /* Logo Image */
 
 .webp-support div.logo {
-    background-image: url(https://xeidamoka.com/PurpleBrickWall) !important;
+    background-image: url(https://www.notion.so/image/https%3A%2F%2Fi.imgur.com%2FMUVSbC6.png?id=8e31d0ce-39a8-4ad3-9486-dda8f607c254&table=collection&spaceId=f1a3ce2c-f911-4fc1-a443-17bd0a51c403&width=2000&userId=1e27ceb0-2244-4973-acad-52cdd42f70e3&cache=v2) !important;
 }
 

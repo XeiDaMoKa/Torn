@@ -42,3 +42,16 @@ $(' .point-block___rQyUK:nth-child(1) ')
 
         location = "pmarket.php";
 });
+
+$('.tt-sidebar-information').insertAfter('.tick-list___McObN').show();
+
+// Change Company Addiction to CA
+$('#ocTimer .title').text(function(i, oldText) {
+    return oldText.replace(':', '');
+});
+
+
+// Change Company Addiction to CA
+$('#companyAddictionLevel .title').text(function(i, oldText) {
+    return oldText.replace('Company Addiction:', 'CA');
+});

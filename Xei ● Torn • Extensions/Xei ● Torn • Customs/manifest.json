@@ -17,15 +17,15 @@
       "default_popup": "/popup.html"
     },
 
-    "host_permissions": ["*://*.torn.com/*"],
+    "host_permissions": ["*://www.torn.com/*"],
     "content_scripts": [
         {
-          "matches": ["*://*.torn.com/*"],
+          "matches": ["*://www.torn.com/*"],
           "css": ["Geral/geral.css"],
           "js": ["jquery.js" , "Geral/geral.js"]
         },
         {
-          "matches": ["*://*.torn.com/index*"],
+          "matches": ["*://www.torn.com/index*"],
           "css": ["Travel/travel.css"],
           "js": ["Travel/Travel.js"]
         },

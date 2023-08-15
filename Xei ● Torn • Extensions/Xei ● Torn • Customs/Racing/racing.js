@@ -7,7 +7,7 @@ if ($('#racingupdatesnew .properties-wrap li:eq(0)')
 
   .attr('aria-description')
 
-    .includes('85.333333333333%')
+    .includes('85,333333333333%')
 
       && $('#racingupdatesnew .properties-wrap li:eq(5)')
 

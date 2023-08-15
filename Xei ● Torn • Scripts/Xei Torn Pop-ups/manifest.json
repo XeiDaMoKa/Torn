@@ -17,10 +17,10 @@
     "default_popup": "/popup.html"
   },
 
-  "host_permissions": ["*://*.torn.com/*"],
+  "host_permissions": ["*://www.torn.com/*"],
   "content_scripts": [
     {
-      "matches": ["*://*.torn.com/*"],
+      "matches": ["*://www.torn.com/*"],
         "js": [
           "jquery.js",
           "Pop-ups/Points.js",
