@@ -1,31 +1,36 @@
 // ==UserScript==
-// @name                    Xei ● Torn • Clean SideBar
-// @description         Colorizes menu icons and adds icons to Events
-// @version                 0.2.7
-// @author                  XeiDaMoKa [2373510]
+// @name                     Xei ● Torn • Clean SideBar
+// @description          Colorizes menu icons and adds icons to Events
+// @version                  0.2.7
+// @author                   XeiDaMoKa [2373510]
 // @icon
 // @match                    https://www.torn.com/*
 // @homepageURL     https://www.xeidamoka.com/torn/scripts/clean-sidebar
-// @downloadURL        https://github.com/XeiDaMoKa/Xei-Torn/blob/Xei/Xei%20●%20Torn%20•%20Scripts/Better-SideBar.user/Better-SideBar.user.js
+// @downloadURL       https://github.com/XeiDaMoKa/Xei-Torn/blob/Xei/Xei%20●%20Torn%20•%20Scripts/Better-SideBar.user/Better-SideBar.user.js
 // @updateURL           https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%20%E2%97%8F%20Torn%20%E2%80%A2%20Scripts/Better-SideBar.user/Better-SideBar.user.js
 // @supportURL          https://github.com/XeiDaMoKa/Xei-Torn/issues
+// @grant                     GM_addStyle
 // ==/UserScript==
 
 /* global $ */
 
+GM_addStyle(`
+    body {
+        background-color: #1b0025 !important;
+    }
+    .content-title *,
+    .topSection___U7sVi * {
+        color: #ff5500 !important;
+    }
+    .line-h24 {
+        color: #ff5500 !important;
+    }
+    .header___RpWar {
+        display: none !important;
+    }
+`);
+
 (function() {
-
-// change background Color
-    $('body').css('background-color', '#1b0025 !important');
-
-
-
-// change font color of .h4 and .line-h24 to ff5500
-    $('.content-title * , .topSection___U7sVi *').css('color', '#ff5500 !important');
-
-    $('.line-h24').css('color', '#ff5500 !important');
-
-
 
     //  1º value Title / 2º value Fill Color / 3º value Stroke /  4º value Stroke Color
     // All in Alphabetical Order
@@ -130,6 +135,5 @@
             $svgElement.attr('stroke', strokeColor);
     }
 
-    // Hide Information Tab
-    $('.header___RpWar').hide();
-})();
+
+});
