@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name                    Xei ● Torn • Clean SideBar
 // @description         Colorizes menu icons and adds icons to Events
-// @version                 0.2
+// @version                 0.2.5
 // @author                  XeiDaMoKa [2373510]
 // @icon
 // @match                    https://www.torn.com/*
