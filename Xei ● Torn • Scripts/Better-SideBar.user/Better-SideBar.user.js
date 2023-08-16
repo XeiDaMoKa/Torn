@@ -14,8 +14,11 @@
 
 (function() {
 
-// change background folor to 191919
-    $('.body').css('background-color', '#191919');
+// change background folor of body to
+    $('body').css('background-color', '#1b0025 !important');
+
+
+
 
 
     //  1º value Title / 2º value Fill Color / 3º value Stroke /  4º value Stroke Color
