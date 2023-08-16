@@ -13,6 +13,9 @@
 /* global $ */
 
 (function() {
+// change background color of body to 1b0025
+$('body').css('background', '#1B0025');
+
 
 
           //  1º value Title / 2º value Fill Color / 3º value Stroke /  4º value Stroke Color
