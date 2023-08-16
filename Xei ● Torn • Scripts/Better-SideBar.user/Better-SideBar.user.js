@@ -14,9 +14,10 @@
 
 (function() {
 
-// change background folor of body to
+// change background Color
     $('body').css('background-color', '#1b0025 !important');
 
+    $('.h4 , .line-h24').css('color', '#1b0025 !important');
 
 
 
