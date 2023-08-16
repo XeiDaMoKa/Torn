@@ -3,23 +3,9 @@
 
 
 
-  /* Hide 'Information' , 'Areas' & 'Lists' Headers */
-
-.toggle-block___oKpdF .header___RpWar {
-
-  display : none !important ;
-}
 
 
 
-  /* Hide 'Name:' , 'Money:' , 'Level:' & 'Points:' / Merits & Level */
-.menu-name___DvWEr,
-.point-block___rQyUK:nth-of-type(2),
-.point-block___rQyUK:nth-of-type(4),
-.name___ChDL3,
-.use___wM1PI {
-    display: none !important;
-  }
 
 
 
@@ -88,13 +74,9 @@
 
 
 
-/* Center 'XeiDaMoKa' , 'Money' , 'Points' Container */
 
-.menu-info-row___YG31c,
-.point-block___rQyUK {
 
-  text-align : center !important ;
-}
+
 
 
 
