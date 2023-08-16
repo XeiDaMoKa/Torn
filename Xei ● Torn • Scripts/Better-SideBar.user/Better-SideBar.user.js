@@ -19,9 +19,9 @@
     $('body').css('background-color', '#1b0025 !important');
 
 // change font color of .h4 and .line-h24 to ff5500
-    $('h4').css('color', '#ff5500 !important');
+$('h4').css('color', '#ff5500 !important');
 
-    $('h4 *').css('color', '#ff5500 !important');
+$('h4 *').css('color', '#ff00ff !important');
 
 
     //  1º value Title / 2º value Fill Color / 3º value Stroke /  4º value Stroke Color
