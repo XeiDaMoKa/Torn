@@ -1,0 +1,17 @@
+{
+    "name": "Xei Torn Clean SideBar",
+    "version": "0.3",
+    "description": "Colorizes menu icons and adds icons to Events",
+    "author": "XeiDaMoKa [2373510]",
+    "manifest_version": 3,
+    "content_scripts": [
+      {
+        "matches": [
+          "https://www.torn.com/*"
+        ],
+        "js": [
+          "Better-SideBar.user.js"
+        ]
+      }
+    ]
+  }

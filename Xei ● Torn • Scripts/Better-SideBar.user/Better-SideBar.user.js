@@ -8,28 +8,39 @@
 // @homepageURL     https://www.xeidamoka.com/torn/scripts/clean-sidebar
 // @updateURL           https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%20%E2%97%8F%20Torn%20%E2%80%A2%20Scripts/Better-SideBar.user/Better-SideBar.user.js
 // @supportURL          https://github.com/XeiDaMoKa/Xei-Torn/issues
-// @grant GM_addStyle
 // ==/UserScript==
 
 /* global $ */
 
-    GM_addStyle(`
 
-    /* BackGround Color */
-        body {
-            background-color: #1b0025 !important;
-        }
-        .content-title *,
-        .topSection___U7sVi * {
-            color: #ff5500 !important;
-        }
-        .line-h24 {
-            color: #ff5500 !important;
-        }
-        .header___RpWar {
-            display: none !important;
-    }
-`);
+
+
+/* BackGround Color */
+    $('body').css('background-color', '#1b0025');
+
+// Titles Color
+    $('.content-title *, .topSection___U7sVi *').css('color', '#ff5500');
+
+// Subtitles Color
+    $('.line-h24').css('color', '#ff5500');
+
+// Hide "Information" Title on SideBar
+    $('.header___RpWar').css('display', 'none');
+
+// Hide "Name:" / "Money:" / "Level:"" / "Points:" & "Merits:"
+    $(".menu-name___DvWEr , .name___ChDL3").hide();
+
+//Center 'XeiDaMoKa' , 'Money' , 'level' , 'Points' & 'Merits' Container
+    $(".menu-info-row___YG31c , .point-block___rQyUK").css("text-align", "center");
+
+// Change 'XeiDaMoKa' , 'Money' , 'Points' Font Size
+    $('.menu-info-row___YG31c,.point-block___rQyUK').css('font-size', '14px');
+
+
+
+
+
+
 
 
 
