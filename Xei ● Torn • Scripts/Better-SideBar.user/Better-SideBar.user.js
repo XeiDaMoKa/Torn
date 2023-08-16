@@ -14,6 +14,10 @@
 
 (function() {
 
+// change background folor to 191919
+    $('.body').css('background-color', '#191919');
+
+
     //  1º value Title / 2º value Fill Color / 3º value Stroke /  4º value Stroke Color
     // All in Alphabetical Order
 
