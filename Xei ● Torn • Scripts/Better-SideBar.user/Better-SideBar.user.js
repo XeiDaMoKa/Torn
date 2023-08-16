@@ -3,11 +3,11 @@
 // @description         Colorizes menu icons and adds icons to Events
 // @version                 0.2
 // @author                  XeiDaMoKa [2373510]
-// @
+// @icon                        
 // @match                    https://www.torn.com/*
 // @homepageURL     https://www.xeidamoka.com/torn/scripts/clean-sidebar
-// @updateURL
-// @supportURL          https://github.com/XeiDaMoKa/Torn-Scripts/issues
+// @updateURL           https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%20%E2%97%8F%20Torn%20%E2%80%A2%20Scripts/Better-SideBar.user/Better-SideBar.user.js
+// @supportURL          https://github.com/XeiDaMoKa/Xei-Torn/issues
 // ==/UserScript==
 
 /* global $ */
@@ -15,8 +15,8 @@
 (function() {
 
 
-          // Title / Fill Color / Stroke / Stroke Color
-          // All in Alphabetica Order , you can
+          //  1º value Title / 2º value Fill Color / 3º value Stroke /  4º value Stroke Color
+          // All in Alphabetical Order
 
     const colorizations = {
 
