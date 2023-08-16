@@ -14,6 +14,8 @@
 /* global $ */
 
     GM_addStyle(`
+
+    /* BackGround Color */
         body {
             background-color: #1b0025 !important;
         }
