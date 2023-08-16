@@ -1,15 +1,6 @@
 
 
 
-  /* Background Color */
-
-body {
-
-  background-color: #1c0028 !important;
-}
-
-
-
   /* Titles Color */
 
 h4 {
@@ -202,4 +193,3 @@ h4 {
 .webp-support div.logo {
     background-image: url(https://www.notion.so/image/https%3A%2F%2Fi.imgur.com%2FMUVSbC6.png?id=8e31d0ce-39a8-4ad3-9486-dda8f607c254&table=collection&spaceId=f1a3ce2c-f911-4fc1-a443-17bd0a51c403&width=2000&userId=1e27ceb0-2244-4973-acad-52cdd42f70e3&cache=v2) !important;
 }
-
