@@ -8,10 +8,29 @@
 // @homepageURL     https://www.xeidamoka.com/torn/scripts/clean-sidebar
 // @updateURL           https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%20%E2%97%8F%20Torn%20%E2%80%A2%20Scripts/Better-SideBar.user/Better-SideBar.user.js
 // @supportURL          https://github.com/XeiDaMoKa/Xei-Torn/issues
+// @grant GM_addStyle
 // ==/UserScript==
 
 /* global $ */
-// lets hide the element header___RpWar desktop___ei8Er at the end of this script
+
+    GM_addStyle(`
+        body {
+            background-color: #1b0025 !important;
+        }
+        .content-title *,
+        .topSection___U7sVi * {
+            color: #ff5500 !important;
+        }
+        .line-h24 {
+            color: #ff5500 !important;
+        }
+        .header___RpWar {
+            display: none !important;
+    }
+`);
+
+
+
 (function() {
 
     //  1º value Title / 2º value Fill Color / 3º value Stroke /  4º value Stroke Color
