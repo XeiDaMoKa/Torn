@@ -14,37 +14,6 @@
 /* global $ */
 
 
-
-
-/* BackGround Color */
-    $('body').css('background-color', '#1b0025');
-
-// Titles Color
-    $('.content-title *, .topSection___U7sVi *').css('color', '#ff5500');
-
-// Subtitles Color
-    $('.line-h24').css('color', '#ff5500');
-
-// Hide "Information" Title on SideBar
-    $('.header___RpWar').css('display', 'none');
-
-// Hide "Name:" / "Money:" / "Level:"" / "Points:" & "Merits:"
-    $(".menu-name___DvWEr , .name___ChDL3").hide();
-
-//Center 'XeiDaMoKa' , 'Money' , 'level' , 'Points' & 'Merits' Container
-    $(".menu-info-row___YG31c , .point-block___rQyUK").css("text-align", "center");
-
-// Change 'XeiDaMoKa' , 'Money' , 'Points' Font Size
-    $('.menu-info-row___YG31c,.point-block___rQyUK').css('font-size', '14px');
-
-
-
-
-
-
-
-
-
 (function() {
 
     //  1º value Title / 2º value Fill Color / 3º value Stroke /  4º value Stroke Color

@@ -6,12 +6,9 @@
     "manifest_version": 3,
     "content_scripts": [
       {
-        "matches": [
-          "https://www.torn.com/*"
-        ],
-        "js": [
-          "Better-SideBar.user.js"
-        ]
+        "matches": ["https://www.torn.com/*"],
+        "js": ["jquery.js", "Better-SideBar.user.js"],
+        "css": ["Better-SideBar.css"]
       }
     ]
   }
