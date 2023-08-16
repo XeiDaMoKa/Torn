@@ -21,7 +21,7 @@
 // change font color of .h4 and .line-h24 to ff5500
     $('h4').css('color', '#ff5500 !important');
 
-
+    $('.line-h24 ').css('color', '#ff00ff !important');
 
 
 
