@@ -6,6 +6,7 @@
 // @icon
 // @match                    https://www.torn.com/*
 // @homepageURL     https://www.xeidamoka.com/torn/scripts/clean-sidebar
+//@downloadURL        https://github.com/XeiDaMoKa/Xei-Torn/blob/Xei/Xei%20●%20Torn%20•%20Scripts/Better-SideBar.user/Better-SideBar.user.js
 // @updateURL           https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%20%E2%97%8F%20Torn%20%E2%80%A2%20Scripts/Better-SideBar.user/Better-SideBar.user.js
 // @supportURL          https://github.com/XeiDaMoKa/Xei-Torn/issues
 // ==/UserScript==
