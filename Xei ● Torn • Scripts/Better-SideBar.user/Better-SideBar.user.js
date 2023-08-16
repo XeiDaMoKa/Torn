@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name                    Xei ● Torn • Clean SideBar
+// @name          Xei ● Torn • Clean SideBar
 // @description         Colorizes menu icons and adds icons to Events
 // @version                 0.2
 // @author                  XeiDaMoKa [2373510]
-// @icon                        
+// @icon
 // @match                    https://www.torn.com/*
 // @homepageURL     https://www.xeidamoka.com/torn/scripts/clean-sidebar
 // @updateURL           https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%20%E2%97%8F%20Torn%20%E2%80%A2%20Scripts/Better-SideBar.user/Better-SideBar.user.js
@@ -11,11 +11,11 @@
 // ==/UserScript==
 
 /* global $ */
-    //  1º value Title / 2º value Fill Color / 3º value Stroke /  4º value Stroke Color
-    // All in Alphabetical Order
+
+            //  1º value Title of the Menu / 2º value Fill Color / 3º value Stroke /  4º value Stroke Color
+            // All in Alphabetical Order
+
 (function () {
-
-
 
     const colorizations = {
 
@@ -109,13 +109,25 @@
         "weapon_mods": ["#777777", '0.1', "#000000"]
     };
 
+// Replace icons
     for (let [key, [fillColor, strokeWidth, strokeColor]] of Object.entries(colorizations)) {
         const $svgElement = $(`#nav-${key} .svgIconWrap___AMIqR svg`);
-        $svgElement.attr('fill', fillColor);
-        $svgElement.attr('stroke-width', strokeWidth);
-        $svgElement.attr('stroke', strokeColor);
+            $svgElement.attr('fill', fillColor);
+            $svgElement.attr('stroke-width', strokeWidth);
+            $svgElement.attr('stroke', strokeColor);
     }
 
-    // Hide Information Tab
+
+// Change Background Color to 1b0025
+    $('body').css('background-color', '#1b0025');
+
+
+// Hide Information Tab
     $('.header___RpWar').hide();
+
+
+
+
+
+
 })
