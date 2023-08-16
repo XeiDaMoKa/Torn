@@ -13,8 +13,8 @@
 /* global $ */
 
 (function() {
-// change background color of body to 1b0025
-$('body').css('background', '#1B0025');
+// change background color of body to ff5500
+$('body').css('background', '#ff5500');
 
 
 
