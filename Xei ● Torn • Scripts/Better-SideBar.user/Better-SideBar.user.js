@@ -20,6 +20,7 @@
 // change font color of .h4 and .line-h24 to ff5500
     $('#h4 , .line-h24').css('color', '#ff5500 !important');
 
+    $('.topSection___U7sVi ').css('color', '#ff00ff !important');
 
 
 
