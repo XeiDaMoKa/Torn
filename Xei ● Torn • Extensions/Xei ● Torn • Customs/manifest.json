@@ -1,27 +1,35 @@
 {
-  "name": "Xei ● Torn • Settingsc",
+  "name": "Xei ● Torn • Customs",
   "version": "0.3",
   "description": "Colorizes menu icons and adds icons to Events",
   "author": "XeiDaMoKa [2373510]",
   "manifest_version": 3,
 
   "icons": {
-    "16": "Icons/XeiTornCustomsIcon16x16.png",
-    "32": "Icons/XeiTornCustomsicon32x32.png",
-    "48": "Icons/XeiTornCustomsicon48x48.png",
-    "128": "Icons/XeiTornCustomsicon128x128.png"
+    "16": "icons/xeiTornCustomsIcon16x16.png",
+    "32": "icons/xeiTornCustomsicon32x32.png",
+    "48": "icons/xeiTornCustomsicon48x48.png",
+    "128": "icons/xeiTornCustomsicon128x128.png"
   },
 
+  "permissions": ["storage", "activeTab", "scripting"],
+
   "action": {
+    "default_icon": {
+    "16": "icons/xeiTornCustomsIcon16x16.png",
+    "32": "icons/xeiTornCustomsicon32x32.png",
+    "48": "icons/xeiTornCustomsicon48x48.png",
+    "128": "icons/xeiTornCustomsicon128x128.png"
+    },
     "default_title": "Torn ● Customs • Settings",
-    "default_popup": "/Customs.html"
+    "default_popup": "popup.html"
   },
 
   "content_scripts": [
     {
       "matches": ["https://www.torn.com/*"],
-      "js": ["jquery.js", "Customs.user.js"],
-      "css": ["Customs.css"]
+      "js": ["jquery.js" , "customs.js"],
+      "css": ["customs.css"]
     }
   ]
 }

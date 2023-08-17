@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Torn ● Customs • Settings</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>Torn ● Customs • Settings</h1>
+        <div class="buttons-container">
+            <button id="clearStorage">Clear Storage</button>
+            <div class="import-export-container">
+                <button id="import">Import</button>
+                <button id="export">Export</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="settings">
+
+        <div class="backgroundColor">
+            <label>Background Color</label>
+            <input class="input-color-picker" type="color" data-id="bg-color" value="#1b0025">
+        </div>
+
+        <div class="titlesColor">
+            <label>Titles Color</label>
+            <input class="input-color-picker" type="color" data-id="title-color" value="#ff5500">
+        </div>
+
+    </div>
+
+    <script src="jquery.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>
