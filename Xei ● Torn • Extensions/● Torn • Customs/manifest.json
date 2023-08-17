@@ -1,0 +1,37 @@
+{
+    "name": "Xei ● Torn • Customs",
+    "description": "Changes in Torn.com",
+    "version": "0.2.0",
+    "author": "XeiDaMoKa [2373510]",
+    "manifest_version": 3,
+
+    "icons": {
+      "16": "Images/icons/icon16.png",
+      "32": "Images/icons/icon32.png",
+      "48": "Images/icons/icon48.png",
+      "128": "Images/icons/icon128.png"
+    },
+
+    "action": {
+      "default_title": "Torn ● Customs • Settings",
+      "default_popup": "/popup.html"
+    },
+
+    "host_permissions": ["*://www.torn.com/*"],
+    "content_scripts": [
+        {
+          "matches": ["*://www.torn.com/*"],
+          "css": ["Geral/geral.css"],
+          "js": ["jquery.js" , "Geral/geral.js"]
+        },
+        {
+          "matches": ["*://www.torn.com/index*"],
+          "css": ["Travel/travel.css"],
+          "js": ["Travel/Travel.js"]
+        },
+        {
+          "matches": ["*://*.torn.com/loader*"],
+          "js": ["Racing/racing.js"]
+        }
+    ]
+}
