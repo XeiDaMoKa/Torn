@@ -3,22 +3,15 @@
 
 
 
-$(document).ready(function() {
-    chrome.storage.local.get("backgroundColor", function(data) {
-        if (data.backgroundColor) {
-            $('.input-color-picker[data-id="bg-color"]').val(data.backgroundColor);
-        }
-    });
-    // Listens for changes in color picker
+    // Listens for changes in background color picker
     $('.input-color-picker[data-id="bg-color"]').on('input', function() {
         var newColor = $(this).val();
 
-// Sends the color to the customs script
+// Sends the color to customs.js to preview and apply after refresh
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             chrome.tabs.sendMessage(tabs[0].id, {action: "changeBackgroundColor", color: newColor});
 
-// Saves in Local Storage
+// Saves in local storage
             chrome.storage.local.set({"backgroundColor": newColor});
         });
     });
-});

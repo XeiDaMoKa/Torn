@@ -1,160 +1,204 @@
 
 
 
+  /* Background Color */
 
+  body {
 
+    background-color: #1c0028 !important;
+  }
 
 
 
+    /* Titles Color */
 
+  h4 {
 
+    color : #f50 !important ;
 
+  }
 
-  /* Hide Bar Titles */
 
-.bar-name___cHBD8 ,
-.bar-name___EcY8p  {
 
-  display : none !important ;
+    /* Color of SubTitles */
 
-}
+  .line-h24 {
 
+    color : #f50 !important ;
+  }
 
 
-/* Color of 'Energy' */
 
-.energy___hsTnO .bar-value___NTdce {
+    /* Hide 'Information' , 'Areas' & 'Lists' Headers */
 
-  padding-left : 2px !important ;
+  .toggle-block___oKpdF .header___RpWar {
 
-  color : #93f707 !important ;
+    display : none !important ;
+  }
 
-  font-size : 12.5px !important ;
-}
 
 
+    /* Hide 'Name:' , 'Money:' , 'Level:' & 'Points:' / Merits & Level */
+  .menu-name___DvWEr,
+  .point-block___rQyUK:nth-of-type(2),
+  .point-block___rQyUK:nth-of-type(4),
+  .name___ChDL3,
+  .use___wM1PI {
+      display: none !important;
+    }
 
-/* Color of 'Nerve' */
 
-.nerve___AyYv_ .bar-value___NTdce {
 
-  padding-left : 2px !important ;
 
-  color : #ff6a00  !important ;
+    /* Hide Bar Titles */
 
-  font-size : 12.5px !important ;
-}
+  .bar-name___cHBD8 ,
+  .bar-name___EcY8p  {
 
+    display : none !important ;
 
+  }
 
-/* Color of 'Happy' */
 
-.happy___g3XML .bar-value___NTdce {
 
-  padding-left : 2.5px ;
+  /* Color of 'Energy' */
 
-  color : #e6e86d ;
+  .energy___hsTnO .bar-value___NTdce {
 
-  font-size : 12.5px ;
-}
+    padding-left : 2px !important ;
 
+    color : #93f707 !important ;
 
+    font-size : 12.5px !important ;
+  }
 
 
-/* Color of 'Life' */
 
-.life___PlnzK .bar-value___NTdce {
+  /* Color of 'Nerve' */
 
-  padding-left : 2px !important ;
+  .nerve___AyYv_ .bar-value___NTdce {
 
-  color : #6587ff ;
+    padding-left : 2px !important ;
 
-  font-size : 12.5px !important ;
-}
+    color : #ff6a00  !important ;
 
+    font-size : 12.5px !important ;
+  }
 
 
 
+  /* Color of 'Happy' */
 
+  .happy___g3XML .bar-value___NTdce {
 
+    padding-left : 2.5px ;
 
+    color : #e6e86d ;
 
+    font-size : 12.5px ;
+  }
 
 
 
-/* Color of 'XeiDaMoKa' */
 
-.menu-value___gLaLR {
+  /* Color of 'Life' */
 
-  color : rgb(250 , 75 , 0) !important ;
+  .life___PlnzK .bar-value___NTdce {
 
-  font-size : 15px !important ;
+    padding-left : 2px !important ;
 
-  font-weight : 750 !important
-}
+    color : #6587ff ;
 
+    font-size : 12.5px !important ;
+  }
 
 
-/* Color of 'Money' */
 
-#user-money {
+  /* Center 'XeiDaMoKa' , 'Money' , 'Points' Container */
 
-  color : rgb(0,175,0) !important ;
+  .menu-info-row___YG31c,
+  .point-block___rQyUK {
 
-  font-size : 16px !important ;
+    text-align : center !important ;
+  }
 
-  font-weight : 750 !important
-}
 
 
 
-/* Color of 'Points' */
 
-.value___mHNGb {
+  /* Color of 'XeiDaMoKa' */
 
-  color : rgb(0,100,200) !important ;
+  .menu-value___gLaLR {
 
-  font-size : 16px !important ;
+    color : rgb(250 , 75 , 0) !important ;
 
-  font-weight : 750 !important
-}
+    font-size : 15px !important ;
 
+    font-weight : 750 !important
+  }
 
 
-.tt-sidebar-information , .tt-sidebar-information-divider.tt-delimiter {
 
-  display : none ;
-}
+  /* Color of 'Money' */
 
+  #user-money {
 
+    color : rgb(0,175,0) !important ;
 
-#companyAddictionLevel span, .countdown {
+    font-size : 16px !important ;
 
-    float: right ;
+    font-weight : 750 !important
+  }
 
-    color: #888888
-}
 
-.bar-value___uxnah {
-  padding-left: 2.5px
-}
-.tt-sidebar-information .title {
-  padding-left: 3px
-}
 
+  /* Color of 'Points' */
 
+  .value___mHNGb {
 
-/* Color of Headers , Links & Server */
+    color : rgb(0,100,200) !important ;
 
-.d .t-blue-cont a , .link-text , .server-name___DSWCP {
+    font-size : 16px !important ;
 
-  color : rgb(0,175,225) !important ;
-}
+    font-weight : 750 !important
+  }
 
 
 
-  /* Logo Image */
+  .tt-sidebar-information , .tt-sidebar-information-divider.tt-delimiter {
 
-.webp-support div.logo {
-    background-image: url(https://www.notion.so/image/https%3A%2F%2Fi.imgur.com%2FMUVSbC6.png?id=8e31d0ce-39a8-4ad3-9486-dda8f607c254&table=collection&spaceId=f1a3ce2c-f911-4fc1-a443-17bd0a51c403&width=2000&userId=1e27ceb0-2244-4973-acad-52cdd42f70e3&cache=v2) !important;
-}
+    display : none ;
+  }
+
+
+
+  #companyAddictionLevel span, .countdown {
+
+      float: right ;
+
+      color: #888888
+  }
+
+  .bar-value___uxnah {
+    padding-left: 2.5px
+  }
+  .tt-sidebar-information .title {
+    padding-left: 3px
+  }
+
+
+
+  /* Color of Headers , Links & Server */
+
+  .d .t-blue-cont a , .link-text , .server-name___DSWCP {
+
+    color : rgb(0,175,225) !important ;
+  }
+
+
+
+    /* Logo Image */
+
+  .webp-support div.logo {
+      background-image: url(https://www.notion.so/image/https%3A%2F%2Fi.imgur.com%2FMUVSbC6.png?id=8e31d0ce-39a8-4ad3-9486-dda8f607c254&table=collection&spaceId=f1a3ce2c-f911-4fc1-a443-17bd0a51c403&width=2000&userId=1e27ceb0-2244-4973-acad-52cdd42f70e3&cache=v2) !important;
+  }
