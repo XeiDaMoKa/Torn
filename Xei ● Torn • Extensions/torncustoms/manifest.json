@@ -12,7 +12,10 @@
     "128": "icons/xeiTornCustomsicon128x128.png"
   },
 
-  "permissions": ["storage", "activeTab", "scripting"],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"],
 
   "action": {
     "default_icon": {

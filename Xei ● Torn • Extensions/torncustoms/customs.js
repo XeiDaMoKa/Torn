@@ -3,7 +3,6 @@
 
 
 
-
 // As soon as the script runs, retrieve the saved color from local storage and apply it to the page background.
 chrome.storage.local.get("backgroundColor", function(data) {
     if (data.backgroundColor) {
