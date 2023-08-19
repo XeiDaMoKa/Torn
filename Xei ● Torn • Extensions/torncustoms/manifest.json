@@ -31,8 +31,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.torn.com/*"],
-      "js": ["jquery.js" , "customs.js"],
-      "css": ["customs.css"]
+      "js": ["jquery.js" , "customs.js"]
     }
   ]
 }

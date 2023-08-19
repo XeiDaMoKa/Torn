@@ -4,11 +4,13 @@
 
 
 // Dynamically Preview background color picker from popup.js
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request) {
     if (request.action === "changeBackgroundColor") {
         document.body.style.backgroundColor = request.color;
     }
 });
+
+
 
 
 // Apply Saved Background Storage
