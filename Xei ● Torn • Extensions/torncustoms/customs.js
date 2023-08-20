@@ -3,19 +3,12 @@
 
 
 
-// Dynamically Preview background color picker from popup.js
+// Directly set the background color from the message
 chrome.runtime.onMessage.addListener(function(request) {
-    if (request.action === "changeBackgroundColor") {
-        document.body.style.backgroundColor = request.color;
-    }
+    document.querySelector('body').style.backgroundColor = request.color;
 });
 
-
-
-
-// Apply Saved Background Storage
-chrome.storage.local.get("backgroundColor", function(data) {
-    if (data.backgroundColor) {
-        document.body.style.backgroundColor = data.backgroundColor;
-    }
+// Directly apply the saved background color from local storage
+chrome.storage.local.get("bodyColor", function(data) {
+    document.querySelector('body').style.backgroundColor = data.bodyColor;
 });

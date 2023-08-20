@@ -12,6 +12,6 @@
             chrome.tabs.sendMessage(tabs[0].id, {action: "changeBackgroundColor", color: newColor});
 
 // Saves in local storage
-            chrome.storage.local.set({"backgroundColor": newColor});
+            chrome.storage.local.set({"bodyColor": newColor});
         });
     });
