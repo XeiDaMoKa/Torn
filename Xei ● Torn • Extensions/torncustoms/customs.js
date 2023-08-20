@@ -3,12 +3,12 @@
 
 
 
-// Directly set the background color from the message
+// Dynamically apply the body color
 chrome.runtime.onMessage.addListener(function(request) {
-    document.querySelector('body').style.backgroundColor = request.color;
+    document.querySelector('body').style.backgroundColor = request.body;
 });
 
-// Directly apply the saved background color from local storage
-chrome.storage.local.get("bodyColor", function(data) {
-    document.querySelector('body').style.backgroundColor = data.bodyColor;
+// Apply the body color from Storage
+chrome.storage.local.get("body", function(data) {
+    document.querySelector('body').style.backgroundColor = data.body;
 });
