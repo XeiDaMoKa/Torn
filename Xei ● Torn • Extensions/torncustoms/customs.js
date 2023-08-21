@@ -4,11 +4,10 @@
 
 
 // Event listener for messages received from popup.js.
-chrome.runtime.onMessage.addListener(function(data, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(data) {
     for (let selector in data) {
-        let properties = data[selector];
-        for (let prop in properties) {
-            document.querySelector(selector).style[prop] = properties[prop];
+        for (let prop in data[selector]) {
+            document.querySelector(selector).style[prop] = data[selector][prop];
         }
     }
 
@@ -18,12 +17,9 @@ chrome.runtime.onMessage.addListener(function(data, sender, sendResponse) {
 
 // Apply stored customizations on page load
 chrome.storage.local.get('customSettings', function(data) {
-    if (data.customSettings) {
-        for (let selector in data.customSettings) {
-            let properties = data.customSettings[selector];
-            for (let prop in properties) {
-                document.querySelector(selector).style[prop] = properties[prop];
-            }
+    for (let selector in data.customSettings) {
+        for (let prop in data.customSettings[selector]) {
+            document.querySelector(selector).style[prop] = data.customSettings[selector][prop];
         }
     }
 });

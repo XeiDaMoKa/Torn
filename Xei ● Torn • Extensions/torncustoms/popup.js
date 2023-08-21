@@ -23,25 +23,24 @@
 
 
 
-// Event listener for the custom image input.
 $('#bodyIMG').on('change', function() {
     var fileReader = new FileReader();
     fileReader.onloadend = function(event) {
         customData['.custom-bg-desktop, .custom-bg-mobile'] = {
             backgroundImage: `url(${event.target.result})`,
             backgroundSize: 'cover',
-            filter: 'none'
+            filter: 'none',
+            position: 'fixed',  // Ensures the background remains in place all the time
+            top: '0',           // Sets the top position
+            left: '0',          // Sets the left position
+            width: '100vw',     // Ensures the background covers the full viewport width
+            height: '100vh'     // Ensures the background covers the full viewport height
         };
+
         sendToCustoms();
     };
     fileReader.readAsDataURL(this.files[0]);
 });
-
-
-
-
-
-
 
 
 
