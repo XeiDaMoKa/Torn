@@ -9,11 +9,11 @@
 </head>
 <body>
 
-    <div class="header-container">
+    <div class="headerContainer">
         <h1>Torn ● Customs • Settings</h1>
-        <div class="buttons-container">
+        <div class="storageContainer">
             <button id="clearStorage">Clear Storage</button>
-            <div class="import-export-container">
+            <div>
                 <button id="import">Import</button>
                 <button id="export">Export</button>
             </div>
@@ -24,15 +24,19 @@
 
     <div class="settings">
 
-        <div class="bodyColor">
+        <div class="bodyColorBtn">
             <label>Background Color</label>
-            <input class="input-color-picker" type="color" data-id="bg-color">
+            <input class="bodyColorPicker" type="color" data-id="bodyColor">
         </div>
+<div class="customIMGBtn">
+    <label>Custom Image
+        <input type="file" id="bodyIMG" accept="image/*" style="display: none;">
+        <span class="bodyIMGPicker"></span>
+    </label>
+</div>
 
-        <div class="titlesColor">
-            <label>Titles Color</label>
-            <input class="input-color-picker" type="color" data-id="titles-color">
-        </div>
+
+
 
     </div>
 

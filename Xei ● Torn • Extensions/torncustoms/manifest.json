@@ -15,7 +15,9 @@
   "permissions": [
     "storage",
     "activeTab",
-    "scripting"],
+    "scripting",
+    "tabs"
+],
 
   "action": {
     "default_icon": {
