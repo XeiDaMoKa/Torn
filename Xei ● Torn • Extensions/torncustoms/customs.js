@@ -1,14 +1,23 @@
-
-
-
-
-
-// Apply the body color from Storage
-chrome.storage.local.get("body", function(data) {
-    document.body.style.backgroundColor = data.body;
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if (message.action === "applyChanges") {
+        handleChangesInCustoms(message.data.selector, message.data.property, message.data.value);
+    }
 });
 
-// Apply the background image from Storage
-chrome.storage.local.get("bodyImage", function(data) {
-    document.querySelector('.custom-bg-desktop').style.backgroundImage = `url(${data.bodyImage})`;
+function handleChangesInCustoms(selector, property, value) {
+    // Apply changes to the page
+    document.querySelector(selector).style[property] = value;
+
+    // Save to storage
+    chrome.storage.local.set({ [selector]: { property: property, value: value } });
+}
+
+// Apply changes from storage on page load
+chrome.storage.local.get(null, function(items) {
+    for (let selector in items) {
+        let data = items[selector];
+        if (data && data.property && data.value) {
+            document.querySelector(selector).style[data.property] = data.value;
+        }
+    }
 });
