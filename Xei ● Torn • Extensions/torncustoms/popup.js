@@ -3,32 +3,59 @@
 //  popup.js //
 
 
-// A central object to store all the customization data that will be sent to customs.js.
-let customData = {};
+// Gather all fueatures into customData object.
 
-// Event listener for the color picker input.
-$('.bodyColorPicker').on('input', function() {
-    // Use the new combined function to update and send data.
-    updateAndSendData('body', { backgroundColor: this.value });
+    const customData = {};
+
+
+
+
+
+
+// Reads the color picker , associates it to body and sends to customs.js.
+
+    $('.bodyColorPicker').on('input', function() {
+        customData['body'] = { backgroundColor: this.value };
+            sendToCustoms();
 });
+
+
+
+
 
 // Event listener for the custom image input.
 $('#bodyIMG').on('change', function() {
-    let reader = new FileReader();
-
-    reader.onloadend = function(event) {
-        // Use the new combined function to update and send data.
-        updateAndSendData('.custom-bg-desktop, .custom-bg-mobile', { backgroundImage: `url(${event.target.result})` });
+    var fileReader = new FileReader();
+    fileReader.onloadend = function(event) {
+        customData['.custom-bg-desktop, .custom-bg-mobile'] = {
+            backgroundImage: `url(${event.target.result})`,
+            backgroundSize: 'cover',
+            filter: 'none'
+        };
+        sendToCustoms();
     };
-
-    reader.readAsDataURL(this.files[0]);
+    fileReader.readAsDataURL(this.files[0]);
 });
 
-function updateAndSendData(selector, properties) {
-    // Directly set the properties for the selector.
-    customData[selector] = properties;
 
-    // Send the updated customData to customs.js.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function sendToCustoms() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, customData);
     });
