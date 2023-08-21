@@ -14,7 +14,7 @@
 
 // Reads the color picker , associates it to body and sends to customs.js.
 
-    $('.bodyColorPicker').on('input', function() {
+    $('#bodyColor').on('input', function() {
         customData['body'] = { backgroundColor: this.value };
             sendToCustoms();
 });
