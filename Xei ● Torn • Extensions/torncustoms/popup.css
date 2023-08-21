@@ -101,33 +101,53 @@ h1 {
     border: 1px solid #ff5500;
 }
 
-.bodyColorBtn,
-.bodyIMGBtn {
+.customButton {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
     margin-top: 11px;
     font-weight: bold;
-    align-items: center;
     padding: 10px 20px;
     border-radius: 25px;
     background-color: #003355;
     margin-bottom: 9px;
 }
 
+.labelContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bodyColorPicker,
+.bodyIMGPicker {
+    margin-left: 10px;
+}
 
 .bodyColorPicker {
     width: 25px;
     height: 25px;
-    margin-left: 10px;
-    margin-bottom: 2px;
 }
 
 .bodyColorPicker:hover {
-    box-shadow: inset 0 0 0 1px #003355, 0 0 0 1px #ff5500;
+    box-shadow: inset 0 0 0 0px #ffffff, inset 0 0 0 4px #003355, 0 0 0 1px #ff5500;
 }
 
-/* Hide the white background */
+.bodyIMGPicker:hover {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 3px #ff5500;
+}
+
+
 .bodyColorPicker::-webkit-color-swatch-wrapper {
     padding: 0;
 }
+
 
 
 .bodyIMGPicker {
@@ -137,13 +157,11 @@ h1 {
     background-color: #000000;
     border: none;
     cursor: pointer;
-    margin-left: 10px;
-    margin-top: 2px;
-    margin-bottom: 6px;
     box-shadow: 0 0 0 2px #ffffff;
-    vertical-align: middle;
 }
 
-.bodyIMGPicker:hover {
-    box-shadow: inset 0 0 0 1px #003355, 0 0 0 1px #ff5500;
+
+#opacitySlider {
+    width: 50px;
+    margin-top: 5px;
 }
