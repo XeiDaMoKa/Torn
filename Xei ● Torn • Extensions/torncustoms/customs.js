@@ -1,23 +1,25 @@
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    if (message.action === "applyChanges") {
-        handleChangesInCustoms(message.data.selector, message.data.property, message.data.value);
+
+
+// customs.js //
+
+
+// Event listener for messages received from other scripts (e.g., popup.js).
+chrome.runtime.onMessage.addListener(function(data, sender, sendResponse) {
+    for (let selector in data) {
+        for (let property in data[selector]) {
+            applyChanges(selector, property, data[selector][property]);
+        }
     }
 });
-
-function handleChangesInCustoms(selector, property, value) {
-    // Apply changes to the page
+// Function to apply the chosen styles to specific elements on the page and save them to local storage
+function applyChanges(selector, property, value) {
     document.querySelector(selector).style[property] = value;
-
-    // Save to storage
     chrome.storage.local.set({ [selector]: { property: property, value: value } });
 }
-
-// Apply changes from storage on page load
+// Function to retrieve and apply stored customizations on page load.
 chrome.storage.local.get(null, function(items) {
     for (let selector in items) {
         let data = items[selector];
-        if (data && data.property && data.value) {
-            document.querySelector(selector).style[data.property] = data.value;
-        }
+        document.querySelector(selector).style[data.property] = data.value;
     }
 });

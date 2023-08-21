@@ -1,9 +1,12 @@
+
+
+/* popup.js */
+
 @font-face {
     font-family: 'Comfortaa';
     src: url('Comfortaa.ttf') format('truetype');
 }
 
-/*  */
 .separator {
     height: 2.5px;
     background-color: #ff5500;
