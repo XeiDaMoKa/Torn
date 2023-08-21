@@ -6,10 +6,10 @@
   "manifest_version": 3,
 
   "icons": {
-    "16": "icons/xeiTornCustomsIcon16x16.png",
-    "32": "icons/xeiTornCustomsicon32x32.png",
-    "48": "icons/xeiTornCustomsicon48x48.png",
-    "128": "icons/xeiTornCustomsicon128x128.png"
+    "16": "icons/1xeiTornCustomsIcon16x16.png",
+    "32": "icons/1xeiTornCustomsicon32x32.png",
+    "48": "icons/1xeiTornCustomsicon48x48.png",
+    "128": "icons/1xeiTornCustomsicon128x128.png"
   },
 
   "permissions": [
@@ -21,10 +21,10 @@
 
   "action": {
     "default_icon": {
-    "16": "icons/xeiTornCustomsIcon16x16.png",
-    "32": "icons/xeiTornCustomsicon32x32.png",
-    "48": "icons/xeiTornCustomsicon48x48.png",
-    "128": "icons/xeiTornCustomsicon128x128.png"
+    "16": "icons/1xeiTornCustomsIcon16x16.png",
+    "32": "icons/1xeiTornCustomsicon32x32.png",
+    "48": "icons/1xeiTornCustomsicon48x48.png",
+    "128": "icons/1xeiTornCustomsicon128x128.png"
     },
     "default_title": "Torn ● Customs • Settings",
     "default_popup": "popup.html"
