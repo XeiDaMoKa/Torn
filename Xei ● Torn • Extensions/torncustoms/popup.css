@@ -135,28 +135,28 @@ h1 {
     box-shadow: inset 0 0 0 0px #ffffff, inset 0 0 0 4px #003355, 0 0 0 2px #ff5500;
 }
 
-.bodyIMGPicker:hover {
-    box-shadow: 0 0 0 2px #777777,0 0 0 2px #000000, 0 0 0 4.5px #ff5500;
-}
 
 
 .bodyColorPicker::-webkit-color-swatch-wrapper {
     padding: 0;
 }
 
+.bodyIMGPickerContainer:hover {
+    box-shadow: 0 0 0 0.5px #ffffff,0 0 0 3.5px #003355, 0 0 0 5.5px #ff5500;
+}
 
 
-.bodyIMGPicker {
+.bodyIMGPickerContainer {
     margin-left: 15px;
     display: inline-block;
     display: flex;
     align-items: center;
-    width: 18px;
-    height: 20px;
+    width: 17px;
+    height: 19px;
     background-color: #000000;
     border: none;
     cursor: pointer;
-    box-shadow: 0 0 0 2px #ffffff;
+    box-shadow: 0 0 0 2.5px #ffffff;
 }
 
 

@@ -25,10 +25,8 @@
 
 // Initially disable the slider
 $('#opacitySlider').prop('disabled', true);
-
 $('#bodyIMG').on('change', applyImageWithOpacity);
 $('#opacitySlider').on('input', applyImageWithOpacity);
-
 $('#bodyColor').on('input', function() {
     customData['body'] = { backgroundColor: this.value };
     sendToCustoms();
