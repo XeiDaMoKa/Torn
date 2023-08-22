@@ -99,7 +99,7 @@ h1 {
     display: flex;
     align-items: center;  /* Vertically center the child items */
     padding: 1% 10%;  /* Adjust as needed to control space from edges */
-    justify-content: space-between;  /* Distribute space evenly between the child items */
+    justify-content: space-between;
     border: 1px solid #ff5500;
 }
 
@@ -121,19 +121,14 @@ h1 {
     justify-content: center;
 }
 
-.controls {
-    display: flex;
-    align-items: center;
-}
 
-.bodyColorPicker,
-.bodyIMGPicker {
-    margin-left: 10px;
-}
+
 
 .bodyColorPicker {
     width: 25px;
     height: 25px;
+    margin-left: 15px;
+    margin-top: -2.5px;
 }
 
 .bodyColorPicker:hover {
@@ -152,7 +147,10 @@ h1 {
 
 
 .bodyIMGPicker {
+    margin-left: 15px;
     display: inline-block;
+    display: flex;
+    align-items: center;
     width: 18px;
     height: 20px;
     background-color: #000000;

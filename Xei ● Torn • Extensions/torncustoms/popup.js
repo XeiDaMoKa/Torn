@@ -23,23 +23,42 @@
 
 
 
-    // Handle the change event for the file input
-    $('#bodyIMG').on('change', function() {
-        var fileReader = new FileReader();
-        fileReader.onloadend = function(event) {
-            customData['.custom-bg-desktop, .custom-bg-mobile'] = {
-                backgroundImage: `url(${event.target.result})`,
-                backgroundSize: 'cover',
-                position: 'fixed',
-                filter: 'none',
-                width: '100vw',
-                height: '100vh'
-            };
+// Initially disable the slider
+$('#opacitySlider').prop('disabled', true);
 
-            sendToCustoms();
-        };
-        fileReader.readAsDataURL(this.files[0]);
-    });
+$('#bodyIMG').on('change', applyImageWithOpacity);
+$('#opacitySlider').on('input', applyImageWithOpacity);
+
+$('#bodyColor').on('input', function() {
+    customData['body'] = { backgroundColor: this.value };
+    sendToCustoms();
+});
+
+function applyImageWithOpacity() {
+    customData['.custom-bg-desktop, .custom-bg-mobile'] = {
+        opacity: $('#opacitySlider').val(),
+        filter: 'invert(0%)'
+    };
+
+    // Process the chosen image
+    var fileReader = new FileReader();
+    fileReader.onloadend = function(event) {
+        customData['.custom-bg-desktop, .custom-bg-mobile'].backgroundImage = `url(${event.target.result})`;
+        customData['.custom-bg-desktop, .custom-bg-mobile'].backgroundSize = 'cover';
+        customData['.custom-bg-desktop, .custom-bg-mobile'].position = 'fixed';
+        customData['.custom-bg-desktop, .custom-bg-mobile'].width = '100vw';
+        customData['.custom-bg-desktop, .custom-bg-mobile'].height = '100vh';
+        sendToCustoms();
+
+        // Enable the slider when an image is selected
+        $('#opacitySlider').prop('disabled', false);
+    };
+    fileReader.readAsDataURL(document.getElementById('bodyIMG').files[0]);
+}
+
+
+
+
 
 
 
