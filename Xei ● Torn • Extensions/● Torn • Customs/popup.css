@@ -71,7 +71,6 @@ h1 {
 }
 
 #clearStorage ,
-#import ,
 #export {
     background-color: #003355;
     border: none;
@@ -86,7 +85,6 @@ h1 {
 }
 
 #clearStorage:hover ,
-#import:hover ,
 #export:hover {
     box-shadow: inset 0 0 0 1px #003355, 0 0 0 1px #ff5500;
 }
@@ -173,8 +171,8 @@ h1 {
 }
 #opacitySlider::-webkit-slider-thumb {
     margin-top: -6px;  /* Positions the thumb vertically */
-    border-radius: 50% !important;
-    box-shadow: inset 0 0 0 50px #ff5500 !important;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 50px #ff5500;
 }
 
 

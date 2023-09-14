@@ -19,8 +19,8 @@
         <div class="storageContainer">
             <button id="clearStorage">Clear Storage</button>
             <div>
-                <button id="import">Import</button>
-                <button id="export">Export</button>
+                <div class="spacer"></div>
+                <button id="export">Create Instant Style</button>
             </div>
         </div>
     </div>
@@ -41,14 +41,15 @@
 
         <div class="customButton">
             <div class="labelContainer">
-                <label>Custom Image</label>
+                <label>Custom Image URL</label>
                 <div class="spacer"></div>
                 <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="0.25">
             </div>
-            <div class="bodyIMGPickerContainer">
-                <input class="bodyIMGPicker" type="file" id="bodyIMG" accept="image/*" style="opacity: 0; position: absolute;">
+            <div class="bodyIMGURLContainer">
+                <button id="setIMGURL"> </button>
             </div>
         </div>
+
         </div>
     </div>
 
@@ -61,8 +62,8 @@
 
 
     </div>
-
     <script src="jquery.js"></script>
+    <script src="jszip.js"></script>
     <script src="popup.js"></script>
 </body>
 </html>
