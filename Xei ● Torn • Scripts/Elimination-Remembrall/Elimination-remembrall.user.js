@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Elimination Remembrall
+// @name         eeeeeeeeeElimination Remembrall
 // @description  Glows colors to remember you to attack on the last minutes of elimination
 // @author        XeiDaMoKa [2373510]
 // @version      1.0
@@ -17,8 +17,7 @@
     const settings = {
         green: { color: '#00FF00', minutes: [27, 57], seconds: 30 },
         orange: { color: '#FFA500', minutes: [29, 59], seconds: 0 },
-        red: { color: '#FF0000', minutes: [29, 59], seconds: 50 },
-        default: { color: 'transparent', minutes: [29, 59], seconds: 59 } // Default color
+        red: { color: '#FF0000', minutes: [29, 59], seconds: 50 }
     };
 
     const elements = [
