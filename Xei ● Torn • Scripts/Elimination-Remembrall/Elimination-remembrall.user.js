@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         eeeeeeeeeElimination Remembrall
+// @name         Elimination Remembrall
 // @description  Glows colors to remember you to attack on the last minutes of elimination
 // @author        XeiDaMoKa [2373510]
 // @version      1.0
