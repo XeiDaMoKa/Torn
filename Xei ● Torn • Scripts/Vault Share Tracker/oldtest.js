@@ -95,7 +95,6 @@
                             newCurrentValue += amount;
                         }
 
-                        xvstTEMP = newCurrentValue.toLocaleString();
                         localStorage.setItem('xvstTEMP', xvstTEMP);
                         updateText();
                         $$("Temporary Value Updated and Displayed");
