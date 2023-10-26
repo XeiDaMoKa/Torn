@@ -1,98 +1,48 @@
 // ==UserScript==
-// @name         Elimination Remembrall
-// @description  Glows colors to remember you to attack on the last minutes of elimination
-// @author        XeiDaMoKa [2373510]
-// @version      1.0
+// @name         Torn Chain Warner
+// @version      0.1
+// @description  Check the timer and apply an animated shadow based on the time remaining
+// @author       XeiDaMoKa
 // @match        https://www.torn.com/*
-// @homepageURL   https://www.xeidamoka.com/torn/scripts/elimination-remembrall
-// @updateURL     https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%20%E2%97%8F%20Torn%20%E2%80%A2%20Scripts/Elimination-Remembrall/Elimination-remembrall.user.js
-// @downloadURL    https://github.com/XeiDaMoKa/Xei-Torn/blob/Xei/Xei%20●%20Torn%20•%20Scripts/Elimination-Remembrall/Elimination-remembrall.user.js
-// @supportURL    https://github.com/XeiDaMoKa/Torn-Scripts/issues
 // ==/UserScript==
 
-(function() {
-    'use strict';
+// jQuery
+/* global $ */
 
-    // Edit these settings as needed (color, minutes, seconds)
-    const settings = {
-        green: { color: '#00FF00', minutes: [27, 57], seconds: 30 },
-        orange: { color: '#FFA500', minutes: [29, 59], seconds: 0 },
-        red: { color: '#FF0000', minutes: [29, 59], seconds: 50 }
-    };
+// Define your color and time arrays in minutes:seconds format
+var colors = ["none", "green", "orange", "red"];
+var times = ["0:00", "4:55", "4:50", "4:45"];
+var currentIndex = 0; // Index to track the current color
 
-    const elements = [
-        '#header-root',
-        '#sidebarroot',
-        '.content-wrapper.summer',
-        '._chat-box-wrap_1pskg_111'
-    ];
+// Function to parse minutes:seconds into seconds
+function parseTime(timeStr) {
+    var [minutes, seconds] = timeStr.split(":").map(Number);
+    return minutes * 60 + seconds;
+}
 
-    const changeShadowColor = (color) => {
-        // Remove existing animation style
-        const existingStyle = document.getElementById('breathe-animation');
-        if (existingStyle) existingStyle.remove();
+// Variable to hold the selected elements
+var elementsToApplyShadow = $("#header-root, #sidebarroot, .content-wrapper");
 
-        // Add new animation style
-        const style = document.createElement('style');
-        style.id = 'breathe-animation';
-        style.innerHTML = `
-            @keyframes breathe {
-                0% { box-shadow: 0 0 5px ${color}; }
-                50% { box-shadow: 0 0 20px ${color}, 0 0 30px ${color}; }
-                100% { box-shadow: 0 0 5px ${color}; }
-            }
-        `;
-        document.head.appendChild(style);
+// Function to apply animated shadow effect
+function applyAnimatedShadow() {
+    var timerElement = $(".bar-timeleft___B9RGV");
+    var totalSeconds = parseTime($(".bar-timeleft___B9RGV").text());
 
-        for (const selector of elements) {
-            const element = document.querySelector(selector);
-            if (element) {
-                element.style.animation = 'none';
-                element.offsetHeight; // Trigger reflow
-                element.style.animation = 'breathe 1s infinite';
-            }
-        }
-    };
+    if (totalSeconds > parseTime(times[1])) {
+        // Timer is above 4:55, no shadow
+        elementsToApplyShadow.css("box-shadow", colors[0]);
+    } else if (totalSeconds > parseTime(times[2])) {
+        // Timer is below 4:55, green shadow
+        elementsToApplyShadow.css("box-shadow", "0 0 10px " + colors[1]);
+    } else if (totalSeconds > parseTime(times[3])) {
+        // Timer is below 4:50, orange shadow
+        elementsToApplyShadow.css("box-shadow", "0 0 10px " + colors[2]);
+    } else {
+        // Timer is below 4:45, apply the animated shadow
+        currentIndex = (currentIndex + 1) % 3; // Cycle through 0, 1, 2 for colors
+        elementsToApplyShadow.css("box-shadow", "0 0 10px " + colors[3 + currentIndex]);
+    }
+}
 
-    const setImmediateColor = () => {
-        const now = new Date();
-        const currentMinutes = now.getMinutes();
-        const currentSeconds = now.getSeconds();
-        const totalMinutes = currentMinutes + currentSeconds / 60;
-
-        for (const [key, { color, minutes, seconds }] of Object.entries(settings)) {
-            for (const minute of minutes) {
-                if (totalMinutes >= minute + seconds / 60 && totalMinutes < minute + 2 + seconds / 60) {
-                    changeShadowColor(color);
-                    return;
-                }
-            }
-        }
-    };
-
-    const setTimers = () => {
-        for (const [key, { color, minutes, seconds }] of Object.entries(settings)) {
-            for (const minute of minutes) {
-                const now = new Date();
-                const currentMinutes = now.getMinutes();
-                const currentSeconds = now.getSeconds();
-                let timeoutMinutes = minute - currentMinutes;
-                if (timeoutMinutes < 0) {
-                    timeoutMinutes += 60; // Next hour
-                }
-                const timeout = (timeoutMinutes * 60 + seconds - currentSeconds) * 1000;
-
-                setTimeout(() => {
-                    changeShadowColor(color);
-                    setInterval(() => changeShadowColor(color), 60 * 60 * 1000);
-                }, timeout);
-            }
-        }
-    };
-
-    // Set the shadow color immediately based on the current time
-    setImmediateColor();
-
-    // Then set timers for future changes
-    setTimers();
-})();
+// Periodically check and apply the shadow effect
+setInterval(applyAnimatedShadow, 1000); // Check every second
