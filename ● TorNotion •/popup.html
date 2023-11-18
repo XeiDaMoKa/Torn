@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync to Notion</title>
+    <!-- Add any additional styles or scripts here -->
+    <!-- Include the external script -->
+        <link rel="stylesheet" href="popup.css">
+    <script src="script.js"></script>
+</head>
+<body>
+
+    <h1>Sync to Notion</h1>
+
+    <!-- Input field for Bookie database ID -->
+    <label for="bookieDatabaseId">Bookie Database ID:</label>
+    <input type="text" id="bookieDatabaseId" placeholder="Enter Bookie database ID">
+
+    <!-- Button to trigger synchronization for Bookie -->
+    <button onclick="syncBookieToNotion()">Sync Bookie to Notion</button>
+
+    <!-- Input field for Torn Pai database ID -->
+    <label for="tornPaiDatabaseId">Torn Pai Database ID:</label>
+    <input type="text" id="tornPaiDatabaseId" placeholder="Enter Torn Pai database ID">
+
+    <!-- Button to trigger synchronization for Torn Pai -->
+    <button onclick="syncTornPaiToNotion()">Sync Torn Pai to Notion</button>
+
+    <!-- Display area for status or error messages -->
+    <div id="status"></div>
+
+    <!-- Add any additional HTML elements as needed -->
+
+</body>
+</html>
