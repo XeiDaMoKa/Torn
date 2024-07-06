@@ -9,31 +9,26 @@ $('#bodyColor').on('input', function() {
     sendToCustoms();
 });
 
-// Upload Image
-$('#opacitySlider').prop('disabled', true);
-
-// Set Image using URL
-$('#setIMGURL').on('click', function() {
-    var imageUrl = prompt("Please enter the image URL:", "");
-    if (imageUrl) {
-        customData['.custom-bg-desktop, .custom-bg-mobile'] = {
-            backgroundImage: `url(${imageUrl})`,
-            backgroundSize: 'cover',
-            position: 'fixed',
-            width: '100vw',
-            height: '100vh',
-            opacity: $('#opacitySlider').val()
-        };
-        sendToCustoms();
-    }
+// Change Title Text Color
+$('#titleColor').on('input', function() {
+    // Assuming you want to change h4 and .line-h24 elements' colors
+    customData['h4'] = { color: this.value };
+    customData['.line-h24'] = { color: this.value };
+    sendToCustoms();
 });
 
-// Send customData to customs.js
+// Send customData to customs.js, ensuring not to overwrite existing settings
 function sendToCustoms() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, customData);
+    chrome.storage.local.get('customSettings', function(data) {
+        let updatedSettings = {...data.customSettings, ...customData};
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, updatedSettings);
+        });
+        // Save the merged settings back to storage
+        chrome.storage.local.set({ customSettings: updatedSettings });
     });
 }
+
 
 // Event listener for the Clear Storage button
 document.getElementById('clearStorage').addEventListener('click', function() {

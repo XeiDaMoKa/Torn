@@ -1,32 +1,39 @@
 {
-    "manifest_version": 3,
-    "name": "TorNotion",
-    "version": "1.0",
-    "description": "Description of your extension",
-    "icons": {
-        "16": "icons/tornotionicon16x16.png",
-        "32": "icons/tornotionicon32x32.png",
-        "48": "icons/tornotionicon48x48.png",
-        "128": "icons/tornotionicon128x128.png"
-      },
-      "permissions": [
-        "storage",
-        "activeTab"
-      ],
-      "host_permissions": [
-        "https://*.notion.so/"
-      ],
-    "background": {
-      "service_worker": "background.js"
-    },
-    "action": {
-        "default_icon": {
-        "16": "icons/tornotionicon16x16.png",
-        "32": "icons/tornotionicon32x32.png",
-        "48": "icons/tornotionicon48x48.png",
-        "128": "icons/tornotionicon128x128.png"
-        },
-        "default_title": "Torn ● Customs • Settings",
-        "default_popup": "popup.html"
-      }
+  "manifest_version": 3,
+  "name": "TorNotion",
+  "version": "1.0",
+  "description": "Gather trade data from Torn and save it to Notion.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://www.torn.com/*",
+    "https://api.notion.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.torn.com/trade.php*"],
+      "js": ["jquery.js", "contentScript.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/tornotionicon16x16.png",
+      "32": "icons/tornotionicon32x32.png",
+      "48": "icons/tornotionicon48x48.png",
+      "128": "icons/tornotionicon128x128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/tornotionicon16x16.png",
+    "32": "icons/tornotionicon32x32.png",
+    "48": "icons/tornotionicon48x48.png",
+    "128": "icons/tornotionicon128x128.png"
   }
+}
