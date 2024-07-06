@@ -5,7 +5,7 @@
 // @author       XeiDaMoKa [2373510]
 // @match        https://www.torn.com/*
 // @homepageURL   https://https://xeidamoka.com/AquariusChainWatchers
-// @homepageURL   https://github.com/XeiDaMoKa/Xei-Torn/blob/Xei/Xei●Torn•Scripts/Aquarius/AquariusChainWatcers.user.js
+// @homepageURL   https://github.com/XeiDaMoKa/Xei-Torn/blob/Xei/Xei●Torn•Scripts/Aquarius/AquariusChainWatcers.js
 // @downloadURL   https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei●Torn•Scripts/Aquarius/AquariusChainWatcers.user.js
 // @updateURL     https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei●Torn•Scripts/Aquarius/AquariusChainWatcers.user.js
 // @supportURL    https://github.com/XeiDaMoKa/Xei-Torn-Aquarius-Scripts/issues
