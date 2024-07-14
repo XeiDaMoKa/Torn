@@ -5,9 +5,9 @@
 // @author       XeiDaMoKa [2373510]
 // @match        https://www.torn.com/*
 // @homepageURL   https://https://xeidamoka.com/AquariusChainWatchers
-// @homepageURL   https://github.com/XeiDaMoKa/Xei-Torn-Aquarius-Scripts/blob/Xei/AquariusChainWatchers.user.js
-// @downloadURL   https://github.com/XeiDaMoKa/Xei-Torn-Aquarius-Scripts/raw/Xei/AquariusChainWatchers.user.js
-// @updateURL     https://github.com/XeiDaMoKa/Xei-Torn-Aquarius-Scripts/raw/Xei/AquariusChainWatchers.user.js
+// @homepageURL   https://github.com/XeiDaMoKa/Xei-Torn/edit/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusChainWatchers.user.js
+// @downloadURL   https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusChainWatchers.user.js
+// @updateURL     https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusChainWatchers.user.js
 // @supportURL    https://github.com/XeiDaMoKa/Xei-Torn-Aquarius-Scripts/issues
 //@require             \Users\XeiDaMoKa\OneDrive\● XeiDaMoKa •\🧑‍💻 • CoDeS •\Xei-Torn\Xei●Torn•Scripts\Aquarius\AquariusChainWatchers.user.js
 // @grant        GM_xmlhttpRequest
