@@ -9,6 +9,7 @@
 // @downloadURL   https://github.com/XeiDaMoKa/Xei-Torn-Aquarius-Scripts/raw/Xei/AquariusChainWatchers.user.js
 // @updateURL     https://github.com/XeiDaMoKa/Xei-Torn-Aquarius-Scripts/raw/Xei/AquariusChainWatchers.user.js
 // @supportURL    https://github.com/XeiDaMoKa/Xei-Torn-Aquarius-Scripts/issues
+//@require             \Users\XeiDaMoKa\OneDrive\● XeiDaMoKa •\🧑‍💻 • CoDeS •\Xei-Torn\Xei●Torn•Scripts\Aquarius\AquariusChainWatchers.user.js
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
