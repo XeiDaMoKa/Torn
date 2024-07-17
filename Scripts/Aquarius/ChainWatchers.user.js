@@ -3,6 +3,8 @@
 // @version      1.0
 // @description  Displays who's currently watching the chain in the header of the faction chat with easy status edit.
 // @author       XeiDaMoKa [2373510]
+// @icon
+
 // @match        https://www.torn.com/*
 // @homepageURL   https://https://xeidamoka.com/AquariusChainWatchers
 // @homepageURL   https://github.com/XeiDaMoKa/Xei-Torn/edit/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusChainWatchers.user.js
