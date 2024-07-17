@@ -2,14 +2,14 @@
 // @name          Aquarius Chain Watchers
 // @description   Displays who's currently watching the chain in the header of the faction chat with easy status edit.
 // @author        XeiDaMoKa [2373510]
-// @version       1.0
+// @version       1.1
 // @icon          https://xeidamoka.com/Torn/Scripts/Aquarius/ACWlogo.jpg
 // @match         https://www.torn.com/*
-// @homepageURL   https://xeidamoka.com/AquariusChainWatchers
-// @homepageURL   https://github.com/XeiDaMoKa/Torn/edit/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusChainWatchers.user.js
-// @downloadURL   https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusChainWatchers.user.js
-// @updateURL     https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusChainWatchers.user.js
-// @supportURL    https://github.com/XeiDaMoKa/Xei-Torn/issues
+// @website   https://xeidamoka.com/AquariusChainWatchers
+// @source   https://github.com/XeiDaMoKa/Torn/blob/Xei/Scripts/Aquarius/ChainWatchers.user.js
+// @downloadURL   https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/ChainWatchers.user.js
+// @updateURL     https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/ChainWatchers.user.js
+// @supportURL    https://github.com/XeiDaMoKa/Torn/issues
 // @grant         GM_xmlhttpRequest
 // ==/UserScript==
 
