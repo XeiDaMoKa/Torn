@@ -4,7 +4,7 @@
 // @description  Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author       XeiDaMoKa [2373510]
 // @match        https://www.torn.com/factions.php?step*
-// @icon             https://www.xeidamoka.com/Torn/Scripts/Aquarius/ACWlogo.jpg
+// @icon             https://www.xeidamoka.com/Torn/Scripts/Aquarius/ACWlogo
 // @homepageURL   https://github.com/XeiDaMoKa/Xei-Torn/blob/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusWarsStatsStatus.user.js
 // @downloadURL   https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusWarsStatsStatus.user.js
 // @updateURL     https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusWarsStatsStatus.user.js
