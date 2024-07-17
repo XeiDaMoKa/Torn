@@ -5,7 +5,7 @@
 // @version       1.0
 // @icon          https://www.xeidamoka.com/Torn/Scripts/Aquarius/ACWlogo.jpg
 // @match         https://www.torn.com/*
-// @homepageURL   https://https://xeidamoka.com/AquariusChainWatchers
+// @homepageURL   https://xeidamoka.com/AquariusChainWatchers
 // @homepageURL   https://github.com/XeiDaMoKa/Torn/edit/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusChainWatchers.user.js
 // @downloadURL   https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusChainWatchers.user.js
 // @updateURL     https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusChainWatchers.user.js
