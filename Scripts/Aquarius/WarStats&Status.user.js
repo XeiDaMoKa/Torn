@@ -38,7 +38,7 @@
 	function initializeApiKey() {
 		apiTS = getApiKey();
 		if (!apiTS) {
-			alert("TornStats API key is required for this script to function properly.");
+			alert("TornStats API key is required for this script to function properly, Refresh page.");
 			return false;
 		}
 		return true;
