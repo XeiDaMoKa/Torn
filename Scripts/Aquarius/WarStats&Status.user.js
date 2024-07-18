@@ -12,43 +12,25 @@
 // @grant                   GM.xmlHttpRequest
 // ==/UserScript==
 
+
+
+
 (function() {
 	'use strict';
 
 
-	// Add this near the top of your script, replacing the existing apiTS declaration
-let apiTS;
+    // Add this near the top of your script, replacing the existing apiTS declaration
+    let apiTS = localStorage.getItem('apiTSKey');
 
-function getApiKey() {
-    const storedApiKey = localStorage.getItem('tornStatsApiKey');
-    if (storedApiKey) {
-        return storedApiKey;
-    }
-
-    const userApiKey = prompt("Please enter your TornStats API key:");
-    if (userApiKey) {
-        localStorage.setItem('tornStatsApiKey', userApiKey);
-        return userApiKey;
-    }
-
-    return null;
-}
-
-// Call this function at the start of your main logic
-function initializeApiKey() {
-    apiTS = getApiKey();
     if (!apiTS) {
-        alert("TornStats API key is required for this script to function properly.");
-        return false;
+        apiTS = prompt('Please enter your TornStats API key:');
+        if (apiTS) {
+            localStorage.setItem('apiTSKey', apiTS);
+        } else {
+            alert('API key is required for this script to function.');
+            return;
+        }
     }
-    return true;
-}
-
-    if (!initializeApiKey()) {
-        return; // Exit if API key initialization failed
-    }
-
-
 
 	const sheetId = '173ozL0FSvu2CZS0wFBuV43dmtE4AZ5MOE5MQPOfNvsE';
 
