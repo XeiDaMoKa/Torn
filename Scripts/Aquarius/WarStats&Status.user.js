@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Aquarius - War Stats & Status
-// @version      1.1
+// @version      1.1.0
 // @description  Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author       XeiDaMoKa [2373510]
 // @match        https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
-// @homepageURL   https://github.com/XeiDaMoKa/Xei-Torn/blob/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusWarsStatsStatus.user.js
-// @downloadURL   https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusWarsStatsStatus.user.js
-// @updateURL     https://github.com/XeiDaMoKa/Xei-Torn/raw/Xei/Xei%E2%97%8FTorn%E2%80%A2Scripts/Aquarius/AquariusWarsStatsStatus.user.js
-// @supportURL    https://github.com/XeiDaMoKa/Xei-Torn/issues
+// @homepageURL   https://github.com/XeiDaMoKa/Torn/blob/Xei/Scripts/Aquarius/WarStats%26Status.user.js
+// @downloadURL   https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/WarStats&Status.user.js
+// @updateURL     https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/WarStats&Status.user.js
+// @supportURL    https://github.com/XeiDaMoKa/Torn/issues
 // @grant        GM.xmlHttpRequest
 // ==/UserScript==
 
