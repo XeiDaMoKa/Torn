@@ -28,7 +28,7 @@
 		if (storedApiKey) {
 			return storedApiKey;
 		}
-		const userApiKey = prompt("Aquarius - War Sstats & Status - Please enter your TornStats API key: (https://tornstats.com/settings/general)");
+		const userApiKey = prompt("Aquarius - War Stats & Status - Please enter your TornStats API key: (https://tornstats.com/settings/general)");
 		if (userApiKey) {
 			localStorage.setItem('tornStatsApiKey', userApiKey);
 			return userApiKey;
