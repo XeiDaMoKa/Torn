@@ -16,8 +16,37 @@
 	'use strict';
 
 
-// add your TornStats API here
-	const apiTS = '(add your TornStats API here)';
+	// Add this near the top of your script, replacing the existing apiTS declaration
+let apiTS;
+
+function getApiKey() {
+    const storedApiKey = localStorage.getItem('tornStatsApiKey');
+    if (storedApiKey) {
+        return storedApiKey;
+    }
+
+    const userApiKey = prompt("Please enter your TornStats API key:");
+    if (userApiKey) {
+        localStorage.setItem('tornStatsApiKey', userApiKey);
+        return userApiKey;
+    }
+
+    return null;
+}
+
+// Call this function at the start of your main logic
+function initializeApiKey() {
+    apiTS = getApiKey();
+    if (!apiTS) {
+        alert("TornStats API key is required for this script to function properly.");
+        return false;
+    }
+    return true;
+}
+
+    if (!initializeApiKey()) {
+        return; // Exit if API key initialization failed
+    }
 
 
 
