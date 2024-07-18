@@ -5,7 +5,7 @@
 // @version       1.1.0
 // @icon          https://xeidamoka.com/Torn/Scripts/Aquarius/ACWlogo.jpg
 // @match         https://www.torn.com/*
-// @website       https://xeidamoka.com/AquariusChainWatchers
+// @website       https://xeidamoka.com/Torn/Scripts/Aquarius/ACW
 // @source        https://github.com/XeiDaMoKa/Torn/blob/Xei/Scripts/Aquarius/ChainWatchers.user.js
 // @downloadURL   https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/ChainWatchers.user.js
 // @updateURL     https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/ChainWatchers.user.js
