@@ -532,23 +532,129 @@
 		element.style.fontWeight = color ? 'bold' : 'normal';
 	}
 
-	function handleMutations(mutationsList) {
-		for (let mutation of mutationsList) {
-			if (mutation.type === 'childList') {
-				for (let i = 0; i < mutation.addedNodes.length; i++) {
-					const node = mutation.addedNodes[i];
-					if (node.querySelector && node.querySelector('.enemy-faction')) {
-						$$('[AWSS] List appeared');
-						addStatsColumn(node);
-						const factionId = getFactionId();
-						fetchFactionData(factionId);
-						observePlayerStatusChanges(node);
-						const statsHeader = node.querySelector('.stats-column');
-						if (statsHeader) {
-							statsHeader.textContent = 'Stats';
-						}
-					}
-				}
+function addAttackHoldFunctionality() {
+    const attackButtons = document.querySelectorAll('.attack a');
+    attackButtons.forEach(button => {
+        let timer;
+        let isHolding = false;
+
+        button.addEventListener('mousedown', (e) => {
+            isHolding = false;
+            timer = setTimeout(() => {
+                isHolding = true;
+                const userId = button.href.split('user2ID=')[1];
+                showAttackIframe(userId, () => { isHolding = false; });
+            }, 1000);
+        });
+
+        button.addEventListener('mouseup', (e) => {
+            clearTimeout(timer);
+            if (isHolding) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+
+        button.addEventListener('mouseleave', () => {
+            clearTimeout(timer);
+        });
+
+        button.addEventListener('click', (e) => {
+            if (isHolding) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+    });
+}
+
+function showAttackIframe(userId, onClose) {
+    const existingIframe = document.getElementById('attack-iframe-container');
+    if (existingIframe) {
+        existingIframe.remove();
+    }
+
+    const container = document.createElement('div');
+    container.id = 'attack-iframe-container';
+    container.style.position = 'fixed';
+    container.style.top = '10px';
+    container.style.right = '10px';
+    container.style.zIndex = '999999';
+    container.style.width = '1025px'; // Adjust as needed
+    container.style.height = '491px'; // Adjust as needed
+
+    const iframe = document.createElement('iframe');
+    iframe.id = 'attack-iframe';
+    iframe.src = `https://www.torn.com/loader.php?sid=attack&user2ID=${userId}`;
+    iframe.style.width = '977px';
+    iframe.style.height = '490px';
+    iframe.style.border = '2px solid #ff5500';
+
+    container.appendChild(iframe);
+    document.body.appendChild(container);
+
+    const closeIframe = () => {
+        container.remove();
+        document.removeEventListener('click', handleOutsideClick);
+        if (onClose) onClose();
+    };
+
+    const handleOutsideClick = (event) => {
+        if (!container.contains(event.target)) {
+            closeIframe();
+        }
+    };
+
+    document.addEventListener('click', handleOutsideClick);
+
+    // Inject CSS to hide elements and remove margins after iframe loads
+    iframe.addEventListener('load', () => {
+        const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+        if (iframeDocument) {
+            const style = iframeDocument.createElement('style');
+            style.textContent = `
+                body {
+                    margin: 0;
+                    overflow: hidden; /* Disable scrolling */
+                    height: 100%; /* Ensure body fills the iframe */
+                }
+                html {
+                    height: 100%; /* Ensure html element fills the iframe */
+                }
+                #header-root, #chatRoot, .appHeaderWrapper___uyPti, .logStatsWrap___ujaj_, .log___HL_LJ {
+                    display: none !important;
+                }
+                .content-wrapper {
+                    margin: 0 !important;
+                }
+            `;
+            iframeDocument.head.appendChild(style);
+        }
+    });
+}
+
+
+
+
+
+function handleMutations(mutationsList) {
+    for (let mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+            for (let i = 0; i < mutation.addedNodes.length; i++) {
+                const node = mutation.addedNodes[i];
+                if (node.querySelector && node.querySelector('.enemy-faction')) {
+                    $$('[AWSS] List appeared');
+                    addStatsColumn(node);
+                    const factionId = getFactionId();
+                    fetchFactionData(factionId);
+                    observePlayerStatusChanges(node);
+                    const statsHeader = node.querySelector('.stats-column');
+                    if (statsHeader) {
+                        statsHeader.textContent = 'Stats';
+                    }
+                    addAttackHoldFunctionality(); // Add this line
+                }
+            }
 				for (let i = 0; i < mutation.removedNodes.length; i++) {
 					const node = mutation.removedNodes[i];
 					if (node.querySelector && node.querySelector('.enemy-faction')) {
