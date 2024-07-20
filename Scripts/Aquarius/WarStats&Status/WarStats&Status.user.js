@@ -6,9 +6,9 @@
 // @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
-// @homepageURL   https://github.com/XeiDaMoKa/Torn/blob/Xei/Scripts/Aquarius/WarStats&Status/WarStats&Status.user.js
-// @downloadURL     https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/WarStats&Status/WarStats&Status.user.js
-// @updateURL         https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/WarStats&Status/WarStats&Status.user.js
+// @homepageURL   https://github.com/XeiDaMoKa/Torn/blob/Xei/Scripts/Aquarius/WarStats%26Status.user.js
+// @downloadURL     https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/WarStats&Status.user.js
+// @updateURL         https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/WarStats&Status.user.js
 // @supportURL        https://github.com/XeiDaMoKa/Torn/issues
 // @grant                   GM.xmlHttpRequest
 // ==/UserScript==
@@ -410,18 +410,27 @@
 		const style = document.createElement('style');
 		style.textContent = `
 				.stats-column, .level, .table-cell, .points, .status, .attack {
-					width: 57px !important;
-					min-width: 57px !important;
-					max-width: 57px !important;
+					width: 60px !important;
+					min-width: 60px !important;
+					max-width: 60px !important;
 					box-sizing: border-box !important;
 					padding: 5px !important;
 					overflow: hidden !important;
 					text-overflow: ellipsis !important;
 					white-space: nowrap !important;
 				}
+				.status {
+					width: 55px !important;
+					min-width: 55px !important;
+				}
+				.attack {
+					width: 55px !important;
+					min-width: 55px !important;
+				}
+
 				.level {
-					width: 39px !important;
-					min-width: 39px !important;
+					width: 30px !important;
+					min-width: 30px !important;
 				}
 				.white-grad > div {
 					display: flex !important;
@@ -463,6 +472,8 @@
 				.stats-column {
 					position: relative;
 					cursor: pointer;
+                         width: 45px !important;
+					min-width: 45px !important;
 				}
 			`;
 		listContainer.appendChild(style);
