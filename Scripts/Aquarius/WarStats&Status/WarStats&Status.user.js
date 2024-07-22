@@ -18,7 +18,7 @@
 
 
 
-	const sheetId = '173ozL0FSvu2CZS0wFBuV43dmtE4AZ5MOE5MQPOfNvsE';
+	const sheetId = '1rZPGL3wB2J3L0EI3D1AKI4bQy0XW7SXkfthVAYJCxXQ';
 
 
 
@@ -88,6 +88,16 @@
 		});
 	}
 
+const emojiColorMap = {
+    '⚪': '',
+    '🔵': 'blue',
+    '🟢': 'green',
+    '🟡': 'yellow',
+    '🟠': 'orange',
+    '🔴': 'red',
+    '🟣': 'purple',
+    '⚫': 'black'
+};
 
 	const countryFlagMap = {
 		'United Kingdom': 'uk',
@@ -129,24 +139,25 @@
 		return 0;
 	}
 
-	function getStoredStates() {
-		const stored = localStorage.getItem(STORAGE_KEY);
-		return stored ? JSON.parse(stored) : {};
-	}
+function getStoredStates() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : {};
+}
 
-	function setStoredStates(states) {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(states));
-	}
+function setStoredStates(states) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(states));
+}
 
-	function updateStoredState(playerId, color) {
-		const states = getStoredStates();
-		if (color) {
-			states[playerId] = color;
-		} else {
-			delete states[playerId];
-		}
-		setStoredStates(states);
-	}
+function updateStoredState(playerId, emoji) {
+    const states = getStoredStates();
+    if (emoji) {
+        states[playerId] = emoji;
+    } else {
+        delete states[playerId];
+    }
+    setStoredStates(states);
+}
+
 
 	function fetchFactionData(factionId) {
 		const now = Date.now();
@@ -475,62 +486,165 @@
                          width: 45px !important;
 					min-width: 45px !important;
 				}
+
 			`;
 		listContainer.appendChild(style);
 	}
 
-	function updateStatsCells() {
-		const storedStates = getStoredStates();
-		const playerRows = document.querySelectorAll('.enemy');
-		playerRows.forEach(row => {
-			const profileLink = row.querySelector('a[href^="/profiles.php?XID="]');
-			if (profileLink) {
-				const playerId = profileLink.href.split('XID=')[1];
-				const statsCell = row.querySelector('.stats-column');
-				if (statsCell) {
-					if (playerStats[playerId]) {
-						const stats = playerStats[playerId];
-						statsCell.textContent = formatTotal(stats.total);
-						const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-						statsCell.title = `
-	<p>Str: ${formatNumber(stats.strength)}</p>
-	<p>Def: ${formatNumber(stats.defense)}</p>
-	<p>Spd: ${formatNumber(stats.speed)}</p>
-	<p>Dex: ${formatNumber(stats.dexterity)}</p>`;
-						statsCell.classList.add('custom-tooltip');
-					} else {
-						statsCell.textContent = 'N/A';
-						statsCell.title = '';
-					}
-					if (storedStates[playerId]) {
-						applyState(statsCell, storedStates[playerId]);
-					}
-					addColorCyclingListener(statsCell, playerId);
-				}
-			}
-		});
-	}
+function updateStatsCells() {
+    const storedStates = getStoredStates();
+    const playerRows = document.querySelectorAll('.enemy');
+    playerRows.forEach(row => {
+        const profileLink = row.querySelector('a[href^="/profiles.php?XID="]');
+        if (profileLink) {
+            const playerId = profileLink.href.split('XID=')[1];
+            const statsCell = row.querySelector('.stats-column');
+            if (statsCell) {
+                if (playerStats[playerId]) {
+                    const stats = playerStats[playerId];
+                    statsCell.textContent = formatTotal(stats.total);
+                    const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    const tooltipContent = `
+                        Str: ${formatNumber(stats.strength)}<br>
+                        Def: ${formatNumber(stats.defense)}<br>
+                        Spd: ${formatNumber(stats.speed)}<br>
+                        Dex: ${formatNumber(stats.dexterity)}
+                    `;
+                    statsCell.setAttribute('title', tooltipContent);
+                    statsCell.classList.add('t-tooltip');
+                    statsCell.classList.add('t-tooltip-up');
+                } else {
+                    statsCell.textContent = 'N/A';
+                    statsCell.removeAttribute('title');
+                    statsCell.classList.remove('t-tooltip', 't-tooltip-up');
+                }
+                if (storedStates[playerId]) {
+                    applyState(statsCell, emojiColorMap[storedStates[playerId]]);
+                }
+                addColorSelectionListener(statsCell, playerId);
+            }
+        }
+    });
+}
 
-	function addColorCyclingListener(element, playerId) {
-		element.addEventListener('click', function(event) {
-			event.stopPropagation();
-			const colors = ['', 'green', 'orange', 'red'];
-			let currentColorIndex = colors.indexOf(this.style.color);
-			currentColorIndex = (currentColorIndex + 1) % colors.length;
-			const newColor = colors[currentColorIndex];
-			applyState(this, newColor);
-			if (newColor === '') {
-				updateStoredState(playerId, null);
-			} else {
-				updateStoredState(playerId, newColor);
-			}
-		});
-	}
 
-	function applyState(element, color) {
-		element.style.color = color;
-		element.style.fontWeight = color ? 'bold' : 'normal';
-	}
+
+function addColorSelectionListener(element, playerId) {
+    element.addEventListener('click', function(event) {
+        event.stopPropagation();
+        showColorPalette(element, playerId);
+    });
+}
+
+let currentPalette = null; // Variable to keep track of the currently displayed palette
+
+function showColorPalette(element, playerId) {
+    if (currentPalette) {
+        currentPalette.remove();
+    }
+
+    const palette = document.createElement('div');
+    palette.className = 'color-palette';
+    palette.style.position = 'absolute';
+    palette.style.zIndex = '9999';
+    palette.style.background = '#1a0025';
+    palette.style.border = '1px solid #ff5500';
+    palette.style.padding = '5px';
+    palette.style.borderRadius = '5px';
+    palette.style.display = 'flex';
+    palette.style.flexDirection = 'row';
+
+    Object.keys(emojiColorMap).forEach(emoji => {
+        const emojiSpan = document.createElement('span');
+        emojiSpan.textContent = emoji;
+        emojiSpan.style.cursor = 'pointer';
+        emojiSpan.style.margin = '0 2px';
+        emojiSpan.addEventListener('click', (e) => {
+            e.stopPropagation();
+            applyState(element, emojiColorMap[emoji]);
+            updateStoredState(playerId, emoji);
+            palette.remove();
+            currentPalette = null;
+        });
+        palette.appendChild(emojiSpan);
+    });
+
+    document.body.appendChild(palette);
+
+    const rect = element.getBoundingClientRect();
+    palette.style.position = 'fixed';
+
+    // Position the palette after it's been added to the DOM
+    setTimeout(() => {
+        const paletteRect = palette.getBoundingClientRect();
+
+        // Center the palette below the cell
+        const centerX = rect.left + (rect.width / 2) - (paletteRect.width / 2);
+        palette.style.left = `${centerX}px`;
+        palette.style.top = `${rect.bottom}px`;
+
+        // Adjust position if it goes off-screen to the left or right
+        if (centerX < 0) {
+            palette.style.left = '5px';
+        } else if (centerX + paletteRect.width > window.innerWidth) {
+            palette.style.left = `${window.innerWidth - paletteRect.width - 5}px`;
+        }
+
+        // Adjust position if it goes off-screen at the bottom
+        if (rect.bottom + paletteRect.height > window.innerHeight) {
+            palette.style.top = `${rect.top - paletteRect.height}px`;
+        }
+    }, 0);
+
+    const closePalette = (e) => {
+        if (!palette.contains(e.target) && e.target !== element) {
+            palette.remove();
+            currentPalette = null;
+            document.removeEventListener('click', closePalette);
+            document.removeEventListener('scroll', closePalette); // Remove scroll event listener
+        }
+    };
+
+    setTimeout(() => {
+        document.addEventListener('click', closePalette);
+        document.addEventListener('scroll', closePalette); // Add scroll event listener
+    }, 0);
+
+    currentPalette = palette;
+}
+
+
+
+
+// Add styling for the color palette
+const style = document.createElement('style');
+style.textContent += `
+    .color-palette {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: auto;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        margin-top: 0;
+    }
+    .color-palette span {
+        font-size: 18px;
+        transition: transform 0.1s;
+        padding: 2px;
+    }
+    .color-palette span:hover {
+        transform: scale(1.2);
+    }
+`;
+document.head.appendChild(style);
+
+
+
+function applyState(element, color) {
+    element.style.color = color;
+    element.style.fontWeight = color ? 'bold' : 'normal';
+}
 
 function addAttackHoldFunctionality() {
     const attackButtons = document.querySelectorAll('.attack a');
