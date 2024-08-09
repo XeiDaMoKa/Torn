@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name                   Aquarius - War Stats & Status (WIT-Mayhem)
+// @name                   Aquarius - War Stats & Status (NPO - Prosperity)
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.1.1
+// @version                1.2.1
 // @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
@@ -18,7 +18,7 @@
 
 
 
-	const sheetId = '1rZPGL3wB2J3L0EI3D1AKI4bQy0XW7SXkfthVAYJCxXQ';
+	const sheetId = '1cQo_kYy_ws4MnGJ5o96cZVoUz4ubfn7W7c3QyfcMkG8';
 
 
 
@@ -207,32 +207,32 @@ function updateStoredState(playerId, emoji) {
 		});
 	}
 
-	function processSheetData(data) {
-		playerStats = {};
-		for (let i = 1; i < data.length; i++) {
-			const row = data[i];
-			if (row.length >= 7) {
-				const nameWithId = row[0];
-				const strength = parseFloat(row[2].replace(/,/g, ''));
-				const defense = parseFloat(row[3].replace(/,/g, ''));
-				const speed = parseFloat(row[4].replace(/,/g, ''));
-				const dexterity = parseFloat(row[5].replace(/,/g, ''));
-				const total = parseFloat(row[6].replace(/,/g, ''));
-				const match = nameWithId.match(/\[(\d+)\]/);
-				if (match) {
-					const id = match[1];
-					playerStats[id] = {
-						strength,
-						defense,
-						speed,
-						dexterity,
-						total
-					};
-				}
-			}
-		}
-		updateStatsCells();
-	}
+function processSheetData(data) {
+    playerStats = {};
+    for (let i = 1; i < data.length; i++) {
+        const row = data[i];
+        if (row.length >= 6) {
+            const nameWithId = row[0];
+            const strength = parseFloat(row[1].replace(/,/g, ''));
+            const defense = parseFloat(row[2].replace(/,/g, ''));
+            const speed = parseFloat(row[3].replace(/,/g, ''));
+            const dexterity = parseFloat(row[4].replace(/,/g, ''));
+            const total = parseFloat(row[5].replace(/,/g, ''));
+            const match = nameWithId.match(/\[(\d+)\]/);
+            if (match) {
+                const id = match[1];
+                playerStats[id] = {
+                    strength,
+                    defense,
+                    speed,
+                    dexterity,
+                    total
+                };
+            }
+        }
+    }
+    updateStatsCells();
+}
 
 	function updatePlayerStatuses() {
 		const playerNodes = document.querySelectorAll('.enemy');
