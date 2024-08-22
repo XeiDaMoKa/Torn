@@ -2,7 +2,7 @@
 // @name                   Aquarius - War Stats & Status (White Rabbits)
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.4.1
+// @version                1.5.4
 // @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
@@ -209,16 +209,46 @@ function updateStoredState(playerId, emoji) {
 
 function processSheetData(data) {
     playerStats = {};
+
+    // Get the header row (first row)
+    const headers = data[0];
+    console.log("Headers:", headers);
+
+    // Find the indices of the relevant columns by their headers
+    const nameIndex = headers.indexOf("Name");
+    const strengthIndex = headers.indexOf("Strength");
+    const defenseIndex = headers.indexOf("Defense");
+    const speedIndex = headers.indexOf("Speed");
+    const dexterityIndex = headers.indexOf("Dexterity");
+    const totalIndex = headers.indexOf("Total");
+
+    // Log if any index is not found
+    if (nameIndex === -1) console.error("Column 'Name' not found");
+    if (strengthIndex === -1) console.error("Column 'Strength' not found");
+    if (defenseIndex === -1) console.error("Column 'Defense' not found");
+    if (speedIndex === -1) console.error("Column 'Speed' not found");
+    if (dexterityIndex === -1) console.error("Column 'Dexterity' not found");
+    if (totalIndex === -1) console.error("Column 'Total' not found");
+
+    // Process each row after the header
     for (let i = 1; i < data.length; i++) {
         const row = data[i];
-        if (row.length >= 6) {
-            const nameWithId = row[0];
-            const strength = parseFloat(row[2].replace(/,/g, ''));
-            const defense = parseFloat(row[3].replace(/,/g, ''));
-            const speed = parseFloat(row[4].replace(/,/g, ''));
-            const dexterity = parseFloat(row[5].replace(/,/g, ''));
-            const total = parseFloat(row[6].replace(/,/g, ''));
-            const match = nameWithId.match(/\[(\d+)\]/);
+        console.log("Processing row:", row);
+
+        // Ensure that the row has all the necessary columns
+        if (row.length >= headers.length) {
+            const nameWithId = row[nameIndex];
+            console.log("Name with ID:", nameWithId);
+
+            // Extract values for each stat, defaulting to 0 if not found or empty
+            const strength = parseFloat(row[strengthIndex]?.replace(/,/g, '') || '0');
+            const defense = parseFloat(row[defenseIndex]?.replace(/,/g, '') || '0');
+            const speed = parseFloat(row[speedIndex]?.replace(/,/g, '') || '0');
+            const dexterity = parseFloat(row[dexterityIndex]?.replace(/,/g, '') || '0');
+            const total = parseFloat(row[totalIndex]?.replace(/,/g, '') || '0');
+
+            // Extract the ID from the nameWithId field
+            const match = nameWithId ? nameWithId.match(/\[(\d+)\]/) : null;
             if (match) {
                 const id = match[1];
                 playerStats[id] = {
@@ -228,11 +258,21 @@ function processSheetData(data) {
                     dexterity,
                     total
                 };
+            } else {
+                console.error("No ID match found for:", nameWithId);
             }
+        } else {
+            console.error("Row has fewer columns than expected:", row);
         }
     }
+
+    // Update the stats cells (assumed to be defined elsewhere in your script)
     updateStatsCells();
 }
+
+
+
+
 
 	function updatePlayerStatuses() {
 		const playerNodes = document.querySelectorAll('.enemy');
