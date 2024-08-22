@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name                   Aquarius - War Stats & Status (NPO - Prosperity)
+// @name                   Aquarius - War Stats & Status (White Rabbits)
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.2.1
+// @version                1.4.1
 // @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
@@ -18,7 +18,7 @@
 
 
 
-	const sheetId = '1cQo_kYy_ws4MnGJ5o96cZVoUz4ubfn7W7c3QyfcMkG8';
+	const sheetId = '1HH8eitGP54OP48p8P_oFmXBZcjni2J40cLMMVxM0Gq4';
 
 
 
@@ -213,11 +213,11 @@ function processSheetData(data) {
         const row = data[i];
         if (row.length >= 6) {
             const nameWithId = row[0];
-            const strength = parseFloat(row[1].replace(/,/g, ''));
-            const defense = parseFloat(row[2].replace(/,/g, ''));
-            const speed = parseFloat(row[3].replace(/,/g, ''));
-            const dexterity = parseFloat(row[4].replace(/,/g, ''));
-            const total = parseFloat(row[5].replace(/,/g, ''));
+            const strength = parseFloat(row[2].replace(/,/g, ''));
+            const defense = parseFloat(row[3].replace(/,/g, ''));
+            const speed = parseFloat(row[4].replace(/,/g, ''));
+            const dexterity = parseFloat(row[5].replace(/,/g, ''));
+            const total = parseFloat(row[6].replace(/,/g, ''));
             const match = nameWithId.match(/\[(\d+)\]/);
             if (match) {
                 const id = match[1];
