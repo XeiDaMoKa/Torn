@@ -1,35 +1,27 @@
-
-
-<!-- html.js -->
-
-</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <title>Torn ● Customs • Settings</title>
+    <title>Torn Customs • Settings</title>
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-
     <div class="headerContainer">
         <h1>Torn ● Customs • Settings</h1>
         <div class="storageContainer">
-            <button id="clearStorage">Clear Storage</button>
-            <div>
-                <div class="spacer"></div>
-                <button id="export">Create Instant Style</button>
-            </div>
+            <button id="toggleInstantStyling">Show Instant Styling</button>
+            <button id="clearStorage">Reset All Settings</button>
         </div>
     </div>
-
+    <div id="cssTextContainer">
+        <p>If you dont like the dealy between page load and element styling , copy this text and paste it into the "customs.css" file in the extension folder:</p>
+        <button id="copyCss">Copy CSS</button>
+        <textarea id="cssText" readonly></textarea>
+            </div>
     <div class="separator"></div>
-
     <div class="settings">
-
-
         <div class="customButton">
             <div class="labelContainer">
                 <label>Background Color</label>
@@ -38,7 +30,6 @@
                 <input class="bodyColorPicker" type="color" id="bodyColor" data-id="bodyColor">
             </div>
         </div>
-
         <div class="customButton">
             <div class="labelContainer">
                 <label>Title Text Color</label>
@@ -47,21 +38,19 @@
                 <input class="bodyColorPicker" type="color" id="titleColor" data-id="titleColor">
             </div>
         </div>
-
+    </div>
+    <div class="separator"></div>
+    <div class="settings">
+        <div class="customButton">
+            <div class="labelContainer">
+                <label>Hide Area Titles</label>
+            </div>
+            <div class="bodyColorPickerContainer">
+                <input type="checkbox" id="hideAreaTitles">
+            </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-    </div>
     <script src="jquery.js"></script>
-    <script src="jszip.js"></script>
     <script src="popup.js"></script>
 </body>
 </html>

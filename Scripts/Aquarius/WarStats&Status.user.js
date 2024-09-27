@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name                   Aquarius - War Stats & Status (White Rabbits)
+// @name                   Aquarius - War Stats & Status (Naughty Souls)
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.5.4
+// @version                1.5.5
 // @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
@@ -18,7 +18,7 @@
 
 
 
-	const sheetId = '1HH8eitGP54OP48p8P_oFmXBZcjni2J40cLMMVxM0Gq4';
+	const sheetId = '1D4NsxLPYiCyvl8ehVi3N_dxGxFrkRA9dsGvgsMm3Ecs';
 
 
 
