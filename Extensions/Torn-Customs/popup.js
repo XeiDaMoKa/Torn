@@ -1,4 +1,3 @@
-
 // Global variable to store custom settings
 let customData = {};
 
@@ -33,19 +32,22 @@ function applySettings() {
         }
     });
 }
-
 // Function to update the UI based on current settings
 function updateUI() {
-    if (customData['body'] && customData['body'].backgroundColor) {
-        $('#bodyColor').val(customData['body'].backgroundColor);
+    const isValidHexColor = (color) => /^#[0-9A-F]{6}$/i.test(color);
+    const bodyColor = customData['body']?.backgroundColor;
+    if (isValidHexColor(bodyColor)) {
+        $('#bodyColor').val(bodyColor);
     }
-    if (customData['h4'] && customData['h4'].color) {
-        $('#titleColor').val(customData['h4'].color);
+    const titleColor = customData['h4']?.color;
+    if (isValidHexColor(titleColor)) {
+        $('#titleColor').val(titleColor);
     }
-    if (customData['.header___RpWar'] && customData['.header___RpWar'].display === 'none') {
-        $('#hideAreaTitles').prop('checked', true);
-    }
+    $('#hideAreaTitles').prop('checked', customData['.header___RpWar']?.display === 'none');
+    $('#hideSidebarLabels').prop('checked', customData['.menu-name___DvWEr']?.display === 'none');
 }
+
+
 
 // Function to update CSS box text
 function updateCssText() {
@@ -56,8 +58,11 @@ function updateCssText() {
     if (customData['h4'] && customData['h4'].color) {
         cssText += `h4 { color: ${customData['h4'].color}; }\n`;
     }
-    if (customData['.header___RpWar']) {
-        cssText += `.header___RpWar { display: ${customData['.header___RpWar'].display}; }\n`;
+    if (customData['.header___RpWar'] && customData['.header___RpWar'].display === 'none') {
+        cssText += `.header___RpWar { display: none; }\n`;
+    }
+    if (customData['.menu-name___DvWEr'] && customData['.menu-name___DvWEr'].display === 'none') {
+        cssText += `.menu-name___DvWEr { display: none; }\n`;
     }
     $('#cssText').val(cssText);
     $$('Updated CSS text:', cssText);
@@ -65,12 +70,29 @@ function updateCssText() {
 
 // Function to handle setting changes
 function handleSettingChange(key, value) {
-    customData[key] = value;
+    if (key === '.header___RpWar') {
+        if (value.display === 'none') {
+            customData[key] = value;
+        } else {
+            delete customData[key];
+            value = { display: 'block' };
+        }
+    } else {
+        customData[key] = value;
+    }
     applySettings();
     saveSettings();
     updateCssText();
     $$('Setting changed:', key, value);
+
+    // Send the updated value to the content script
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        if (tabs.length > 0) {
+            chrome.tabs.sendMessage(tabs[0].id, { [key]: value });
+        }
+    });
 }
+
 
 // Function to save settings to storage
 function saveSettings() {
@@ -92,6 +114,9 @@ $('#hideAreaTitles').on('change', function() {
     handleSettingChange('.header___RpWar', { display: this.checked ? 'none' : 'block' });
 });
 
+$('#hideSidebarLabels').on('change', function() {
+    handleSettingChange('.menu-name___DvWEr', { display: this.checked ? 'none' : 'block' });
+});
 $('#instantStyling').click(function() {
     $('#cssTextContainer').show();
     $$('Instant styling button clicked.');
@@ -155,26 +180,39 @@ function updateClearStorageButton(state) {
     }
 }
 
-// Modify the clear storage button click handler
 $('#clearStorage').click(function() {
     if ($(this).hasClass('red-button')) {
-        chrome.storage.local.clear(function() {
-            customData = {};
-            updateCssText();
-            updateUI();
-            updateClearStorageButton('cleaned');
-
-            // Reset button state after 3 seconds
-            setTimeout(() => {
-                updateClearStorageButton('initial');
-            }, 3000);
-        });
+        clearAndUpdateAll();
     } else {
         updateClearStorageButton('confirm');
         // Reset button state after 3 seconds if not clicked
         setTimeout(() => updateClearStorageButton('initial'), 3000);
     }
 });
+function clearAndUpdateAll() {
+    chrome.storage.local.clear(function() {
+        customData = {};
+
+        updateUI();
+        updateCssText();
+        applySettings();
+
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            if (tabs.length > 0) {
+                chrome.tabs.reload(tabs[0].id);
+            }
+        });
+
+        updateClearStorageButton('cleaned');
+
+        setTimeout(() => {
+            updateClearStorageButton('initial');
+        }, 3000);
+    });
+}
+
+
+
 
 // Don't forget to call this function on initial load
 updateClearStorageButton('initial');

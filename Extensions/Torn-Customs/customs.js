@@ -1,6 +1,6 @@
 // customs.js
 
-// Event listener for messages received from popup.js.
+// This part should already be in your customs.js file
 chrome.runtime.onMessage.addListener(function(data) {
     $.each(data, function(selector, properties) {
         $.each(properties, function(prop, value) {
@@ -8,7 +8,6 @@ chrome.runtime.onMessage.addListener(function(data) {
         });
     });
 });
-
 
 // Apply stored customizations on page load
 chrome.storage.local.get('customSettings', function(data) {
