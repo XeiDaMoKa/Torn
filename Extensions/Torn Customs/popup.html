@@ -3,38 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <title>Torn Customs • Settings</title>
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
     <div class="headerContainer">
         <h1>
             <img src="icons/torncustomslogo32x32.png" alt="Torn Customs Logo" id="logo" />
-            Torn ● Customs • Settings
+            Torn ● Customs •
         </h1>
         <div class="storageContainer">
-            <button id="clearStorage">Reset All Settings</button>
+            <button id="toggleDefaultCSSDisplay">Show Default Settings</button>
+            <button id="toggleCustomCSSDisplay">Show Custom Settings</button>
         </div>
     </div>
-    <div class="separator"></div>
+    <div id="defaultCSSDisplaySection">
+        <div id="defaultCSSTextContainer">
+            <textarea id="defaultCSSText" readonly></textarea>
+            <button id="resetDefaultSettings">Reset Default Settings</button>
+        </div>
+    </div>
+    <div id="customCSSDisplaySection">
+        <div id="customCSSTextContainer">
+            <textarea id="customCSSText"></textarea>
+            <button id="resetCustomSettings">Reset Custom Settings</button>
+        </div>
+    </div>
     <div class="settings">
         <div class="customButton">
             <div class="labelContainer">
                 <label>Background Color</label>
             </div>
-            <div class="bodyColorPickerContainer">
-                <input class="bodyColorPicker" type="color" id="bodyColor" data-id="bodyColor">
-                <button class="resetButton red-button" id="resetBodyColor">X</button>
+            <div class="colorPickerContainer">
+                <input class="colorPicker" type="color" id="bodyColor" data-id="bodyColor">
             </div>
         </div>
         <div class="customButton">
             <div class="labelContainer">
                 <label>Title Text Color</label>
             </div>
-            <div class="bodyColorPickerContainer">
-                <input class="bodyColorPicker" type="color" id="titleColor" data-id="titleColor">
-                <button class="resetButton red-button" id="resetTitleColor">X</button>
+            <div class="colorPickerContainer">
+                <input class="colorPicker" type="color" id="titleColor" data-id="titleColor">
             </div>
         </div>
     </div>

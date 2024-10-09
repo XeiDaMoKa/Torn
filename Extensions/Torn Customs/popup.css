@@ -1,12 +1,9 @@
-html {
-    background-color: #003355;
-}
-
 body {
     background-color: #1b0025;
-    margin: 2.5px;
+    margin: 0; /* Remove margin to avoid scrolling issues */
     width: 500px;
     height: 1000px;
+    overflow-y: scroll;
 }
 
 body::-webkit-scrollbar {
@@ -26,27 +23,29 @@ body::-webkit-scrollbar-thumb {
     color: #ff5500;
     font-family: 'comfortaa', sans-serif;
     vertical-align: middle;
-    position: relative;
-    top: 1px;
+    top: 0px;
 }
 
 #logo {
     vertical-align: middle;
-    margin-right: 5px;
+    margin-right: 15px;
 }
 
 .headerContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    position: sticky;
+    background-color: #1b0025;
+    z-index: 1000;
+    padding: 5px 10px 15px 10px;
 }
 
 h1 {
     text-align: left;
     font-size: 20px;
     font-weight: 900;
-    margin-top: 25px;
+    margin-top: 35px;
     margin-left: 20px;
 }
 
@@ -55,24 +54,24 @@ h1 {
     margin-right: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 5px;
 }
 
-#clearStorage, #toggleInstantStyling {
+#clearStorage, #toggleCSSDisplay {
     background-color: #003355;
     border: none;
     padding: 5px 10px;
     text-align: center;
     font-size: 11px;
-    font-weight: bolder;
+    font-weight: bold !important;
     border-radius: 5px;
     margin-bottom: 3px;
     cursor: pointer;
     box-shadow: 0 0 0 1px #003355;
 }
 
-#clearStorage:hover, #toggleInstantStyling:hover {
+#clearStorage:hover, #toggleCSSDisplay:hover {
     box-shadow: inset 0 0 0 1px #003355, 0 0 0 1px #ff5500;
 }
 
@@ -88,7 +87,7 @@ h1 {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
-    font-weight: bold;
+    font-weight: bold !important;
     padding: 15px 20px;
     border-radius: 25px;
     background-color: #003355;
@@ -101,12 +100,16 @@ h1 {
     justify-content: center;
 }
 
+#cssDisplaySection {
+    display: none;
+    padding: 15px 15px;
+    background-color: #1b0025;
+}
+
 #cssTextContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 8px;
-    margin-top: 15px;
 }
 
 #cssText {
@@ -116,8 +119,7 @@ h1 {
     background-color: #003355;
     color: #ff5500;
     border: 1px solid #ff5500;
-    padding: 10px 15px;
-    overflow: auto;
+    padding: 15px 15px;
 }
 
 #cssText::-webkit-scrollbar {
@@ -130,28 +132,76 @@ h1 {
 
 #cssText::-webkit-scrollbar-thumb {
     background-color: #ff5500;
-    border-radius: 2.5px;
 }
 
-#copyCss {
-    display: block;
-    margin: 10px auto;
+#defaultCSSDisplaySection, #customCSSDisplaySection {
+    display: none;
+    padding: 15px 15px;
+    background-color: #1b0025;
+}
+
+#defaultCSSTextContainer, #customCSSTextContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#defaultCSSText, #customCSSText {
+    width: calc(100% - 30px);
+    height: 75px;
+    margin-top: 10px;
+    background-color: #003355;
+    color: #ff5500;
+    border: 1px solid #ff5500;
+    padding: 15px 15px;
+    font-weight: bold !important;
+}
+
+#customCSSText.valid {
+    border-color: green;
+    color: green;
+}
+
+#customCSSText.invalid {
+    border-color: red;
+    color: red;
+}
+
+#customCSSText:focus {
+    outline: none;
+    border-color: inherit; /* Use the border color from the valid/invalid class */
+}
+
+#defaultCSSText::-webkit-scrollbar, #customCSSText::-webkit-scrollbar {
+    width: 5px;
+}
+
+#defaultCSSText::-webkit-scrollbar-track, #customCSSText::-webkit-scrollbar-track {
+    background-color: #1f0025;
+}
+
+#defaultCSSText::-webkit-scrollbar-thumb, #customCSSText::-webkit-scrollbar-thumb {
+    background-color: #ff5500;
+}
+
+button {
     background-color: #003355;
     border: none;
-    padding: 5px 5px;
+    padding: 5px 10px;
     text-align: center;
-    font-size: 12px;
-    font-weight: bolder;
+    font-size: 11px;
+    font-weight: bold !important;
     border-radius: 5px;
+    margin-top: 10px;
     cursor: pointer;
     box-shadow: 0 0 0 1px #003355;
 }
 
-#copyCss:hover {
+button:hover {
     box-shadow: inset 0 0 0 1px #003355, 0 0 0 1px #ff5500;
 }
 
-.bodyColorPicker, #hideAreaTitles, #hideSidebarLabels {
+.colorPicker, #hideAreaTitles, #hideSidebarLabels {
     -webkit-appearance: none;
     appearance: none;
     width: 25px;
@@ -165,16 +215,16 @@ h1 {
     margin-top: -2.5px;
 }
 
-.bodyColorPicker::-webkit-color-swatch-wrapper {
+.colorPicker::-webkit-color-swatch-wrapper {
     padding: 0;
 }
 
-.bodyColorPicker::-webkit-color-swatch {
+.colorPicker::-webkit-color-swatch {
     border: none;
     border-radius: 3px;
 }
 
-.bodyColorPicker:hover, #hideAreaTitles:hover, #hideSidebarLabels:hover {
+.colorPicker:hover, #hideAreaTitles:hover, #hideSidebarLabels:hover {
     box-shadow: 0 0 0 2px #ff5500;
 }
 
@@ -206,30 +256,13 @@ h1 {
 }
 
 .red-button {
-    background-color: #770000 !important;
+    background-color: red;
     color: #ffffff;
-    font-weight: bolder;
+    font-weight: bold !important;
 }
 
 .green-button {
-    background-color: rgb(0, 77, 0) !important;
+    background-color: green;
     color: #ffffff;
-    font-weight: bolder;
-}
-
-.resetButton {
-    display: none;
-    background-color: #770000;
-    border: none;
-    padding: 5px 7.5px;
-    text-align: center;
-    font-size: 8px;
-    font-weight: bolder;
-    border-radius: 5px;
-    margin-left: 5px;
-    cursor: pointer;
-    color: #ffffff;
-}
-.resetButton:hover {
-    box-shadow: inset 0 0 0 1px #770000, 0 0 0 1px #ff5500;
+    font-weight: bold !important;
 }

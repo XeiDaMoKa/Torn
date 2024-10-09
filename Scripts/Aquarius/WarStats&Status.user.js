@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name                   Aquarius - War Stats & Status (Naughty Souls)
+// @name                   Aquarius - War Stats & Status (IMOTF)
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.5.5
+// @version                1.5.6
 // @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
@@ -18,7 +18,7 @@
 
 
 
-	const sheetId = '1D4NsxLPYiCyvl8ehVi3N_dxGxFrkRA9dsGvgsMm3Ecs';
+	const sheetId = '1E97DXYppyjTBht0h8CiiytP23ub3swVRY6lExEs8Co8';
 
 
 
