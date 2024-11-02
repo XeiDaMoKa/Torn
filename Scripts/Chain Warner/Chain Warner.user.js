@@ -11,10 +11,10 @@
 
 // Change colors, times, and audio settings
 const settings = {
-    color1: { color: 'green', time: '4:55' },
-    color2: { color: 'orange', time: '4:50' },
-    color3: { color: 'red', time: '4:45' },
-    audio: { audioURL: 'https://dl.sndup.net/v6zq/XeiTornMusic.mp3', time: '4:55' } // 1:42 lenght of the music
+    color1: { color: 'green', time: '1:42' },
+    color2: { color: 'orange', time: '1:00' },
+    color3: { color: 'red', time: '0:30' },
+    audio: { audioURL: 'https://dl.sndup.net/v6zq/XeiTornMusic.mp3', time: '1:42' } // 1:42 lenght of the music
 };
 
 
