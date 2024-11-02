@@ -1,14 +1,13 @@
 // ==UserScript==
-// @name         Torn: Racing enhancements
+// @name         Torn: Racing enhancements (km/h)
 // @namespace    lugburz.racing_enhancements
-// @version      0.6.0
-// @description  Show car's current speed in km/h, precise skill, official race penalty, racing skill of others and race car skins.
-// @author       Lugburz [2386297]
+// @version      0.5.23.1
+// @description  Show car's current speed, precise skill, official race penalty, racing skill of others and race car skins. (changes speed to km/h)
+// @author       Lugburz (XeiDaMoKa)
 // @match        https://www.torn.com/*
-// @icon         https://i.imgur.com/jueaQ98.jpg
 // @require      https://raw.githubusercontent.com/f2404/torn-userscripts/e3bb87d75b44579cdb6f756435696960e009dc84/lib/lugburz_lib.js
-// @downloadURL  https://github.com/XeiDaMoKa/Torn-Scripts/raw/Xei/Forks/racing_show_speed.user.js
-// @updateURL    https://github.com/XeiDaMoKa/Torn-Scripts/raw/Xei/Forks/racing_show_speed.user.js
+// @updateURL    https://github.com/f2404/torn-userscripts/raw/master/racing_show_speed.user.js
+// @downloadURL  https://github.com/f2404/torn-userscripts/raw/master/racing_show_speed.user.js
 // @connect      api.torn.com
 // @connect      race-skins.brainslug.nl
 // @grant        GM_setValue
@@ -425,9 +424,12 @@ function compare(a, b) {
 }
 
 GM_addStyle(`
-.rs-display { 
+.rs-display {
     position: absolute;
     right: 5px;
+}
+ul.driver-item > li.name {
+  overflow: auto;
 }
 li.name .race_position {
   background:url(/images/v2/racing/car_status.svg) 0 0 no-repeat;
@@ -559,7 +561,7 @@ function displayDailyGains() {
             const lastDaysPoints = GM_getValue('lastDaysPoints');
             const currentPoints = GM_getValue('pointsearned');
             const oldPoints = lastDaysPoints && lastDaysPoints.includes(':') ? lastDaysPoints.split(':')[1] : undefined;
-            let pointsTitle = 'Racing points earned: How many points you have earned throughout your carreer.';
+            let pointsTitle = 'Racing points earned: How many points you have earned throughout your career.';
             for (const x of [ {points: 25, class: 'D'}, {points: 100, class: 'C'}, {points: 250, class: 'B'}, {points: 475, class: 'A'} ]) {
                 if (currentPoints && currentPoints < x.points) pointsTitle += `<br>Till <b>class ${x.class}</b>: ${1*x.points - 1*currentPoints}`;
             }
