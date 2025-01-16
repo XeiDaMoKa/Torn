@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name                   Aquarius - War Stats & Status (IMOTF)
+// @name                   Aquarius - War Stats & Status (Flatline)
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.5.6
+// @version                1.5.7
 // @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
@@ -18,7 +18,7 @@
 
 
 
-	const sheetId = '1E97DXYppyjTBht0h8CiiytP23ub3swVRY6lExEs8Co8';
+	const sheetId = '1lfjrg-w1g1Q5nSbjERg_i-e5CFDCQGFttGvczxvs9RQ';
 
 
 
@@ -825,5 +825,32 @@ function handleMutations(mutationsList) {
 	const targetNode = document.body;
 	const config = { childList: true, subtree: true };
 	observer.observe(targetNode, config);
-	$$('Aquarius - War Stats & Status Started');
-})();
+
+// Add styling for tooltips
+const tooltipStyle = document.createElement('style');
+tooltipStyle.textContent = `
+    .custom-tooltip {
+        position: relative;
+        cursor: pointer;
+    }
+    .custom-tooltip::after {
+        content: attr(title);
+        position: absolute;
+        left: 50%;
+        bottom: 100%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: #fff;
+        padding: 5px;
+        border-radius: 3px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+    }
+    .custom-tooltip:hover::after {
+        opacity: 1;
+    }
+`;
+document.head.appendChild(tooltipStyle);
+})(); // Ensure the IIFE is properly closed
