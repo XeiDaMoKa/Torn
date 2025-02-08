@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name                   Aquarius - War Stats & Status (Flatline)
+// @name                   Aquarius - War Stats & Status (Ara Pacis)
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.5.7
+// @version                1.5.8
 // @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
@@ -18,7 +18,7 @@
 
 
 
-	const sheetId = '1lfjrg-w1g1Q5nSbjERg_i-e5CFDCQGFttGvczxvs9RQ';
+	const sheetId = '1kmG7CCqzcc_bfQklRuTxQxtQhT9B0PoRI5n5TFV9cd4';
 
 
 
