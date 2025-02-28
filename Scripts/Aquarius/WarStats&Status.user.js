@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name                   Aquarius - War Stats & Status (JFK)
+// @name                   Aquarius - War Stats & Status (Deja)
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.5.9
+// @version                1.5.10
 // @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
@@ -17,8 +17,11 @@
 	'use strict';
 
 
+	const $$ = console.log;
+	const $$$ = console.error;
 
-	const sheetId = '1_L-SdOVZtoUoplCaQuH_b-gZC_S0SyFa8stnJhZmlgw';
+
+	const sheetId = '1n2AK-tQrZNzdNH2zNwufV5-xG4aQjNYqRXebUxhGjsQ';
 
 
 
@@ -49,9 +52,6 @@
 	}
 
 
-
-	const $$ = console.log;
-	const $$$ = console.error;
 
 	let membersData = {};
 	let playerStats = {};
