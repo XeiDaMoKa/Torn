@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name                   Aquarius - War Stats & Status (IMOTF)
+// @name                   Aquarius - War Stats & Status (WIT-Premier)
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.5.6
+// @version                1.5.11
 // @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
@@ -17,8 +17,11 @@
 	'use strict';
 
 
+	const $$ = console.log;
+	const $$$ = console.error;
 
-	const sheetId = '1mB7tyqPaPfBl3MWIGOlbV7xZ6mAC4KF1t9cUclvt7e4';
+
+	const sheetId = '1lIoY2N29Hsk9gylT02pyWD-qaLZrHSN1tR0nU5u4JzQ';
 
 
 
@@ -49,9 +52,6 @@
 	}
 
 
-
-	const $$ = console.log;
-	const $$$ = console.error;
 
 	let membersData = {};
 	let playerStats = {};
