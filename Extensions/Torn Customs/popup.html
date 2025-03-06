@@ -16,6 +16,7 @@
         <div class="storageContainer">
             <button id="toggleDefaultCSSDisplay">Show Default Settings</button>
             <button id="toggleCustomCSSDisplay">Show Custom Settings</button>
+            <button id="toggleUserScriptDisplay">Show User Script</button>
         </div>
     </div>
     <div id="defaultCSSDisplaySection">
@@ -28,6 +29,12 @@
         <div id="customCSSTextContainer">
             <textarea id="customCSSText"></textarea>
             <button id="resetCustomSettings">Reset Custom Settings</button>
+        </div>
+    </div>
+    <div id="userScriptDisplaySection" style="display: none;">
+        <div id="userScriptTextContainer">
+            <textarea id="userScriptText" readonly></textarea>
+            <button id="downloadUserScript">Download User Script</button>
         </div>
     </div>
     <div class="settings">

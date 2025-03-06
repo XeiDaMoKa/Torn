@@ -1,0 +1,62 @@
+    if( empty(prop("Parent item")), formatDate(prop("Date"), "e") + "º │ " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 43, length(prop("Days Rollup")) - 42) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 36, length(prop("Days Rollup")) - 35) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 29, length(prop("Days Rollup")) - 28) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 22, length(prop("Days Rollup")) - 21) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 15, length(prop("Days Rollup")) - 14) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 8, length(prop("Days Rollup")) - 7) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 1, length(prop("Days Rollup"))) + " \n" +
+
+    formatDate(dateSubtract(prop("Date"), 1, "days"), "e") + "º │ " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 44, length(prop("Days Rollup")) - 43) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 37, length(prop("Days Rollup")) - 36) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 30, length(prop("Days Rollup")) - 29) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 23, length(prop("Days Rollup")) - 22) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 16, length(prop("Days Rollup")) - 15) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 9, length(prop("Days Rollup")) - 8) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 2, length(prop("Days Rollup")) - 1) + " \n" +
+
+    formatDate(dateSubtract(prop("Date"), 2, "days"), "e") + "º │ " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 45, length(prop("Days Rollup")) - 44) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 38, length(prop("Days Rollup")) - 37) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 31, length(prop("Days Rollup")) - 30) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 24, length(prop("Days Rollup")) - 23) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 17, length(prop("Days Rollup")) - 16) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 10, length(prop("Days Rollup")) - 9) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 3, length(prop("Days Rollup")) - 2) + " \n" +
+
+    formatDate(dateSubtract(prop("Date"), 3, "days"), "e") + "º │ " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 46, length(prop("Days Rollup")) - 45) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 39, length(prop("Days Rollup")) - 38) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 32, length(prop("Days Rollup")) - 31) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 25, length(prop("Days Rollup")) - 24) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 18, length(prop("Days Rollup")) - 17) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 11, length(prop("Days Rollup")) - 10) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 4, length(prop("Days Rollup")) - 3) + " \n" +
+
+    formatDate(dateSubtract(prop("Date"), 4, "days"), "e") + "º │ " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 47, length(prop("Days Rollup")) - 46) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 40, length(prop("Days Rollup")) - 39) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 33, length(prop("Days Rollup")) - 32) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 26, length(prop("Days Rollup")) - 25) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 19, length(prop("Days Rollup")) - 18) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 12, length(prop("Days Rollup")) - 11) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 5, length(prop("Days Rollup")) - 4) + " \n" +
+
+    formatDate(dateSubtract(prop("Date"), 5, "days"), "e") + "º │ " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 48, length(prop("Days Rollup")) - 47) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 41, length(prop("Days Rollup")) - 40) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 34, length(prop("Days Rollup")) - 33) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 27, length(prop("Days Rollup")) - 26) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 20, length(prop("Days Rollup")) - 19) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 13, length(prop("Days Rollup")) - 12) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 6, length(prop("Days Rollup")) - 5) + " \n" +
+
+    formatDate(dateSubtract(prop("Date"), 6, "days"), "e") + "º │ " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 49, length(prop("Days Rollup")) - 48) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 42, length(prop("Days Rollup")) - 41) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 35, length(prop("Days Rollup")) - 34) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 28, length(prop("Days Rollup")) - 27) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 21, length(prop("Days Rollup")) - 20) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 14, length(prop("Days Rollup")) - 13) + " " +
+    slice(prop("Days Rollup"), length(prop("Days Rollup")) - 7, length(prop("Days Rollup")) - 6) + " " , "" )

@@ -189,5 +189,89 @@ $('#clearStorage').on('click', function() {
     });
 });
 
+// Toggle the visibility of the User Script section
+$('#toggleUserScriptDisplay').on('click', function() {
+    const $userScriptDisplaySection = $('#userScriptDisplaySection');
+    if ($userScriptDisplaySection.is(':visible')) {
+        $userScriptDisplaySection.hide();
+        $(this).text('Show User Script');
+    } else {
+        $userScriptDisplaySection.show();
+        $(this).text('Hide User Script');
+        generateUserScript();
+    }
+});
+
+// Generate the user script content
+function generateUserScript() {
+    chrome.storage.sync.get(['tornCustomsStyles', 'customCSSRules'], function(data) {
+        let userScriptContent = `// ==UserScript==
+// @name         Torn Customs
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Customizes Torn.com
+// @author       XeiDaMoKa
+// @match        https://www.torn.com/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Apply stored styles
+    function applyStyles(styles) {
+        let styleString = '';
+        if (styles && Object.keys(styles).length > 0) {
+            Object.keys(styles).forEach(selector => {
+                styleString += selector + ' { ';
+                Object.keys(styles[selector]).forEach(property => {
+                    styleString += property + ': ' + styles[selector][property] + '; ';
+                });
+                styleString += '} ';
+            });
+        }
+        const styleElement = document.createElement('style');
+        styleElement.type = 'text/css';
+        styleElement.textContent = styleString;
+        document.head.appendChild(styleElement);
+    }
+
+    // Apply custom CSS rules
+    function applyCustomCSS(css) {
+        const styleElement = document.createElement('style');
+        styleElement.type = 'text/css';
+        styleElement.textContent = css;
+        document.head.appendChild(styleElement);
+    }
+
+    // Apply styles from storage
+    const styles = ${JSON.stringify(data.tornCustomsStyles || {})};
+    const customCSS = ${JSON.stringify(data.customCSSRules || '')};
+    applyStyles(styles);
+    applyCustomCSS(customCSS);
+})();`;
+
+        $('#userScriptText').val(userScriptContent);
+    });
+}
+
+
+
+
+$('#downloadUserScript').on('click', function() {
+    const userScriptContent = $('#userScriptText').val();
+    const blob = new Blob([userScriptContent], { type: 'text/javascript' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'torn-customs.user.js';
+    a.target = '_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+});
+
+
 // Initial load of styles
 updateFromStorage();updateFromStorage();

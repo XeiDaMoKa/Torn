@@ -1,0 +1,1359 @@
+// ==UserScript==
+// @name         Notion Price List
+// @version      1.9
+// @description  Flight Club - Notion - Torn Sync
+// @author       XeiDaMoKa [2373510]
+// @match        https://www.notion.so/xeidamoka/Price-List-13b2a9c404f78107a12bd84cb0c22647
+// @match        https://www.notion.so/xeidamoka/13c2a9c404f780a29f73e5a906a6e3d1?v=09ecf42d332546708be035734a17a05a
+// @match        https://www.notion.so/xeidamoka/13b2a9c404f780f39d30e1b32f9d53e1?v=13b2a9c404f780dcbccf000c32560fad
+// @grant        GM_xmlhttpRequest
+// @require      https://code.jquery.com/jquery-3.7.1.min.js
+// ==/UserScript==
+
+// allow jquery
+/* global $ */
+
+(function() {
+	'use strict';
+
+	const $$ = console.log;
+	const $$$ = console.error;
+	const $$$$ = console.groupCollapsed;
+	const $$$$$ = console.groupEnd;
+
+	const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQjOOer7W5sNa-uOJ1obtdueJNlBN9maijcd-19OSPXXavtjAaCXqmXX-QuZaf_MdhmcO_BknU9KlY-/pubhtml?gid=0&single=true';
+	const notionApiKey = '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';
+	const notionItemsDBID = '13b2a9c404f781948708e0250c8587a6';
+	const notionTradesDBID = '13c2a9c404f780a29f73e5a906a6e3d1';
+	const tornApiKey = 'zSZxDxtrMMyvGzWz';
+	const tornUserId = '2373510';
+
+	let googleSheetItems = [];
+	let processedItems = new Set();
+
+	// Part 1 - update item db in notion with sheet data
+
+	GM_xmlhttpRequest({
+		method: 'GET',
+		url: sheetUrl,
+		onload: function(response) {
+			if (response.status === 200) {
+				const parser = new DOMParser();
+				const doc = parser.parseFromString(response.responseText, 'text/html');
+				const rows = doc.querySelectorAll('tr');
+				$$$$('Google Sheets Items');
+				rows.forEach(row => {
+					const cells = row.querySelectorAll('td');
+					if (cells.length > 0) {
+						const imageUrl = cells[1].querySelector('img') ? cells[1].querySelector('img').src : '';
+						const itemName = cells[2].innerText.trim();
+						const clubPrice = cells[3].innerText.trim().replace(/[^0-9.]/g, '').replace(/,/g, '');
+						const totalPrice = cells[8].innerText.trim().replace(/[^0-9.]/g, '').replace(/,/g, '');
+						const seasonBonusPrice = cells[7].innerText.trim().replace(/[^0-9.]/g, '').replace(/,/g, '');
+						const itemsNeeded = cells[5].innerText.trim().replace(/,/g, '');
+						if (itemName && itemName !== 'Name' && itemName !== 'Plushie set' && itemName !== 'Flower set' && !processedItems.has(itemName)) {
+							googleSheetItems.push({ itemName, clubPrice, totalPrice, seasonBonusPrice, itemsNeeded, imageUrl });
+							processedItems.add(itemName);
+							$$( `${itemName}: Club Price: ${clubPrice}, Total Price: ${totalPrice}, Season Bonus Price: ${seasonBonusPrice}, Items Needed: ${itemsNeeded}, Image: ${imageUrl}`);
+						}
+					}
+				});
+				$$$$$();
+				fetchNotionData(notionItemsDBID, compareAndAddOrUpdateItems, fetchNotionTradesData);
+			} else {
+				$$$('Failed to fetch the Google Sheets data');
+			}
+		}
+	});
+
+	function fetchNotionData(databaseId, callback, finalCallback, startCursor = null) {
+		const requestData = startCursor ? { start_cursor: startCursor } : {};
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: `https://api.notion.com/v1/databases/${databaseId}/query`,
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(requestData),
+			onload: function(response) {
+				if (response.status === 200) {
+					const data = JSON.parse(response.responseText);
+					callback(data.results);
+					if (data.has_more) {
+						fetchNotionData(databaseId, callback, finalCallback, data.next_cursor);
+					} else if (finalCallback) {
+						// Call the final callback after all data is fetched and processed
+						finalCallback();
+					}
+				} else {
+					$$$('Failed to fetch the Notion data', response);
+				}
+			},
+			onerror: function(error) {
+				$$$('Error occurred while fetching the Notion data', error);
+			}
+		});
+	}
+
+	function compareAndAddOrUpdateItems(notionItems) {
+		const notionItemsMap = new Map();
+
+		// Map Notion items by item name for easy lookup
+		notionItems.forEach(item => {
+			const itemName = item.properties.Item.title[0].text.content;
+			const id = item.properties.ID ? item.properties.ID.number : 'N/A';
+			const sheetTotalPrice = item.properties['Sheet Total Price'] ? item.properties['Sheet Total Price'].number : null;
+			const sheetClubPrice = item.properties['Sheet Club Price'] ? item.properties['Sheet Club Price'].number : null;
+			const seasonBonusPrice = item.properties['Season Bonus Price'] ? item.properties['Season Bonus Price'].number : null;
+			const sheetNeeded = item.properties['Sheet Needed'] ? item.properties['Sheet Needed'].number : null;
+			notionItemsMap.set(itemName, {
+				id: item.id,
+				itemName: itemName,
+				notionID: id,
+				sheetTotalPrice: sheetTotalPrice,
+				sheetClubPrice: sheetClubPrice,
+				seasonBonusPrice: seasonBonusPrice,
+				sheetNeeded: sheetNeeded
+			});
+		});
+
+		$$$$('Notion Items');
+		notionItemsMap.forEach(item => {
+			$$( `${item.itemName} (Page ID: ${item.id}): ID: ${item.notionID}, Total Price: ${item.sheetTotalPrice}, Club Price: ${item.sheetClubPrice}, Season Bonus Price: ${item.seasonBonusPrice}, Needed: ${item.sheetNeeded}`);
+		});
+		$$$$$();
+
+		// Compare each Google Sheet item with the corresponding Notion item
+		googleSheetItems.forEach(sheetItem => {
+			const notionItem = notionItemsMap.get(sheetItem.itemName);
+			const totalPriceToUse = sheetItem.totalPrice || sheetItem.clubPrice;
+
+			if (!notionItem) {
+				// Item is missing in Notion, add it
+				$$( `Missing item: ${sheetItem.itemName}, Total Price: ${totalPriceToUse}`);
+				addItemToNotion(sheetItem, totalPriceToUse);
+			} else {
+				// Normalize null and empty values
+				const currentNotionTotalPrice = notionItem.sheetTotalPrice || 0;
+				const currentNotionClubPrice = notionItem.sheetClubPrice || 0;
+				const currentNotionSeasonBonusPrice = notionItem.seasonBonusPrice || 0;
+				const currentNotionSheetNeeded = notionItem.sheetNeeded || 0;
+
+				const sheetTotalPrice = parseFloat(totalPriceToUse) || 0;
+				const sheetClubPrice = parseFloat(sheetItem.clubPrice) || 0;
+				const sheetSeasonBonusPrice = parseFloat(sheetItem.seasonBonusPrice) || 0;
+				const sheetNeeded = parseInt(sheetItem.itemsNeeded, 10) || 0;
+
+				if (
+					currentNotionTotalPrice !== sheetTotalPrice ||
+					currentNotionClubPrice !== sheetClubPrice ||
+					currentNotionSeasonBonusPrice !== sheetSeasonBonusPrice ||
+					currentNotionSheetNeeded !== sheetNeeded
+				) {
+					// Update the item if any property has changed
+					updateItemInNotion(notionItem.id, sheetItem, totalPriceToUse);
+				}
+			}
+		});
+	}
+
+	function addItemToNotion(item, totalPriceToUse) {
+		const newItem = {
+			parent: { database_id: notionItemsDBID },
+			properties: {
+				Item: { title: [{ text: { content: item.itemName } }] },
+				'Sheet Total Price': { number: parseFloat(totalPriceToUse) },
+				'Sheet Club Price': { number: parseFloat(item.clubPrice) },
+				'Season Bonus Price': { number: parseFloat(item.seasonBonusPrice) },
+				'Sheet Needed': { number: parseInt(item.itemsNeeded, 10) }
+			},
+			icon: { type: 'external', external: { url: item.imageUrl } },
+			cover: { type: 'external', external: { url: item.imageUrl } }
+		};
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: 'https://api.notion.com/v1/pages',
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(newItem),
+			onload: function(response) {
+				if (response.status === 200 || response.status === 201) {
+					const responseData = JSON.parse(response.responseText);
+					$$( `Added item to Notion: ${item.itemName}, Page ID: ${responseData.id}`);
+				} else {
+					$$$('Failed to add item to Notion', response);
+					$$$('Response Text:', response.responseText);
+				}
+			},
+			onerror: function(error) {
+				$$$('Error occurred while adding item to Notion', error);
+			}
+		});
+	}
+
+	function updateItemInNotion(pageId, item, totalPriceToUse) {
+		const updatedItem = {
+			properties: {
+				'Sheet Total Price': {
+					number: parseFloat(totalPriceToUse)
+				},
+				'Sheet Club Price': {
+					number: parseFloat(item.clubPrice)
+				},
+				'Season Bonus Price': {
+					number: parseFloat(item.seasonBonusPrice)
+				},
+				'Sheet Needed': {
+					number: parseInt(item.itemsNeeded)
+				}
+			}
+		};
+
+		GM_xmlhttpRequest({
+			method: 'PATCH',
+			url: `https://api.notion.com/v1/pages/${pageId}`,
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(updatedItem),
+			onload: function(response) {
+				if (response.status === 200) {
+					const greenText = '\x1b[32m%s\x1b[0m';
+					const logItems = [
+						`Total Price: ${totalPriceToUse}`,
+						`Club Price: ${item.clubPrice}`,
+						`Season Bonus Price: ${item.seasonBonusPrice}`,
+						`Needed: ${item.itemsNeeded}`
+					];
+
+					const currentNotionTotalPrice = updatedItem.properties['Sheet Total Price'].number;
+					const currentNotionClubPrice = updatedItem.properties['Sheet Club Price'].number;
+					const currentNotionSeasonBonusPrice = updatedItem.properties['Season Bonus Price'].number;
+					const currentNotionSheetNeeded = updatedItem.properties['Sheet Needed'].number;
+
+					// Only color the changed properties in green
+					if (currentNotionTotalPrice !== item.sheetTotalPrice) {
+						logItems[0] = greenText.replace('%s', logItems[0]);
+					}
+					if (currentNotionClubPrice !== item.sheetClubPrice) {
+						logItems[1] = greenText.replace('%s', logItems[1]);
+					}
+					if (currentNotionSeasonBonusPrice !== item.seasonBonusPrice) {
+						logItems[2] = greenText.replace('%s', logItems[2]);
+					}
+					if (currentNotionSheetNeeded !== item.sheetNeeded) {
+						logItems[3] = greenText.replace('%s', logItems[3]);
+					}
+
+					$$( `${item.itemName}, ${logItems.join(', ')}`);
+				} else {
+					$$$('Failed to update item in Notion', response);
+					$$$('Response Text:', response.responseText);
+				}
+			},
+			onerror: function(error) {
+				$$$('Error occurred while updating item in Notion', error);
+			}
+		});
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//part 2
+
+
+
+	let createdTradePageId = null;
+	let latestTimestamp = 0;
+	let latestTrade = null;
+	let accumulatedLogs = [];
+	let tradeCounter = 0;
+
+	function fetchNotionTradesData(startCursor = null) {
+		const requestData = startCursor ? { start_cursor: startCursor } : {};
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: `https://api.notion.com/v1/databases/${notionTradesDBID}/query`,
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(requestData),
+			onload: function(response) {
+				if (response.status === 200) {
+					const data = JSON.parse(response.responseText);
+					logAllTradePages(data.results);
+					logLatestTimestampAndFetchFlightClubStatus(data.results);
+					if (data.has_more) {
+						fetchNotionTradesData(data.next_cursor);
+					}
+				} else {
+					console.error('Failed to fetch the Notion trades database', response);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while fetching the Notion trades database', error);
+			}
+		});
+	}
+
+	function logAllTradePages(trades) {
+		$$$$('All Trade Pages');
+		trades.forEach(trade => {
+			const name = trade.properties.Name.title[0].text.content;
+			const timestamp = trade.properties.Timestamp.number;
+			const status = trade.properties.Status.select.name;
+			const buyers = trade.properties.Buyers.relation.map(buyer => buyer.id).join(', ');
+			console.log(`Name: ${name}, Timestamp: ${timestamp}, Status: ${status}, Buyers: ${buyers}`);
+			const tradeNumber = parseInt(name.split(' ')[1]);
+			if (tradeNumber > tradeCounter) {
+				tradeCounter = tradeNumber;
+			}
+		});
+		$$$$$();
+		$$('Finished logging all trade pages');
+		fetchNotionItemsData();
+	}
+
+	function logLatestTimestampAndFetchFlightClubStatus(trades) {
+		let latestName = null;
+		let latestFlightClubTrade = null;
+
+		trades.forEach(trade => {
+			const timestamp = trade.properties.Timestamp.number;
+			if (timestamp > latestTimestamp) {
+				latestTimestamp = timestamp;
+				latestName = trade.properties.Name.title[0].text.content;
+			}
+			const buyerIds = trade.properties.Buyers.relation.map(buyer => buyer.id);
+			if (buyerIds.includes('60b1aa6d-381b-4528-9a41-43885725f7b2')) {
+				if (!latestFlightClubTrade || trade.properties.Timestamp.number > latestFlightClubTrade.properties.Timestamp.number) {
+					latestFlightClubTrade = trade;
+				}
+			}
+		});
+
+		console.log(`Latest Timestamp: ${latestTimestamp}, Latest Name: ${latestName}`);
+
+		if (latestFlightClubTrade) {
+			latestTrade = latestFlightClubTrade;
+			const latestFlightClubStatus = latestFlightClubTrade.properties.Status.select.name;
+			console.log(`Latest Flight Club Trade Status: ${latestFlightClubStatus}`);
+			if (latestFlightClubStatus === 'Trade Progress') {
+				fetchTornApiLogs(latestFlightClubTrade.id, latestTrade.properties.Name.title[0].text.content);
+			} else {
+				// Don't create new trade page, just start fetching logs
+				fetchTornApiLogs(null, latestTrade.properties.Name.title[0].text.content);
+			}
+		} else {
+			// Don't create new trade page, just start fetching logs
+			fetchTornApiLogs(null, "trade 0");
+		}
+	}
+
+	// Update fetchTornApiLogs to include "Item market buy" filtering
+	function fetchTornApiLogs(parentPageId, tradeName, lastTimestamp = null) {
+		const url = lastTimestamp
+		? `https://api.torn.com/user/${tornUserId}?key=${tornApiKey}&selections=log&to=${lastTimestamp}&comment=XeiDaTesT`
+		: `https://api.torn.com/user/${tornUserId}?key=${tornApiKey}&selections=log&comment=XeiDaTesT`;
+		console.log(`Fetching Torn API logs with URL: ${url}`);
+		GM_xmlhttpRequest({
+			method: 'GET',
+			url: url,
+			onload: function(response) {
+				if (response.status === 200) {
+					const data = JSON.parse(response.responseText);
+					const logs = data.log;
+					let lastLogTimestamp = null;
+					for (const logId in logs) {
+						const logEntry = logs[logId];
+						if (logEntry.timestamp <= latestTimestamp) {
+							continue;
+						}
+						if (
+							(logEntry.title === 'Item send' && logEntry.data.message && logEntry.data.message.toLowerCase().includes('flight club')) ||
+							(logEntry.title === 'Money receive' && logEntry.data.message && logEntry.data.message.toLowerCase().includes('flight club')) ||
+							(logEntry.title === 'Item shop buy' && [186, 215, 187].includes(logEntry.data.item)) ||
+							(logEntry.title === 'Item abroad buy' && [258, 274, 384, 276, 385, 268, 269, 277, 281, 266, 267, 271, 628, 282, 261, 264, 263, 617, 260, 272, 273].includes(logEntry.data.item)) ||
+							(logEntry.title === 'Item market buy' && [258, 274, 384, 276, 385, 268, 269, 277, 281, 266, 267, 271, 628, 282, 261, 264, 263, 617, 260, 272, 273].includes(logEntry.data.item))
+						) {
+							accumulatedLogs.push(logEntry);
+							console.log(logEntry);
+						}
+						lastLogTimestamp = logEntry.timestamp;
+					}
+					if (lastLogTimestamp && lastLogTimestamp > latestTimestamp) {
+						setTimeout(() => fetchTornApiLogs(parentPageId, tradeName, lastLogTimestamp), 500);
+					} else {
+						console.log('Finished fetching Torn API logs.');
+						processLogsInReverseOrder(parentPageId, tradeName);
+					}
+				} else {
+					console.error('Failed to fetch Torn API logs', response);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while fetching Torn API logs', error);
+			}
+		});
+	}
+
+	let processedLogIds = new Set(); // Moved outside the function
+
+	function processLogsInReverseOrder(parentPageId, tradeName) {
+		let currentTradeId = parentPageId;
+		let currentTradeName = tradeName;
+
+		// Reverse the logs array to process from oldest to newest
+		accumulatedLogs.reverse();
+
+		// Process each log entry in chronological order
+		accumulatedLogs.forEach((logEntry) => {
+			const uniqueLogId = `${logEntry.log}_${logEntry.timestamp}`;
+			if (processedLogIds.has(uniqueLogId)) {
+				return;
+			}
+
+			console.log(logEntry);
+
+			switch (logEntry.title) {
+				case 'Item send':
+					if (logEntry.data.message &&
+					    logEntry.data.message.toLowerCase().includes('flight club')) {
+						// If we don't have a current trade page, create one
+						if (!currentTradeId) {
+							const newTradeNumber = parseInt(currentTradeName.split(' ')[1]) + 1;
+							currentTradeName = `trade ${newTradeNumber}`;
+							createNewTradePageWithItems(logEntry, currentTradeName, [logEntry])
+								.then(pageId => {
+								currentTradeId = pageId;
+							});
+						} else {
+							// Add item to existing trade
+							createItemSendEntry(logEntry, currentTradeId, currentTradeName);
+						}
+					}
+					break;
+
+				case 'Money receive':
+					if (logEntry.data.message &&
+					    logEntry.data.message.toLowerCase().includes('flight club')) {
+						if (currentTradeId) {
+							updateTradeStatusToFinished(currentTradeId, logEntry);
+							currentTradeId = null; // Reset current trade after finishing
+						}
+					}
+					break;
+
+				case 'Item shop buy':
+					createTradeForShopBuy(logEntry);
+					break;
+
+				case 'Item abroad buy':
+					createTradeForAbroadBuy(logEntry);
+					break;
+
+				case 'Item market buy':
+					createTradeForMarketBuy(logEntry);
+					break;
+			}
+
+			processedLogIds.add(uniqueLogId);
+		});
+	}
+
+	// Modify createNewTradePageWithItems to return a Promise with the page ID
+	function createNewTradePageWithItems(firstLogEntry, tradeName, itemEntries) {
+		return new Promise((resolve, reject) => {
+			const newTradeNumber = parseInt(tradeName.split(' ')[1]) + 1;
+			const newTradeName = `trade ${newTradeNumber}`;
+			tradeCounter = newTradeNumber;
+			const timestampDate = new Date(firstLogEntry.timestamp * 1000).toISOString();
+
+			const newTradePage = {
+				parent: { database_id: notionTradesDBID },
+				properties: {
+					Name: { title: [{ text: { content: newTradeName } }] },
+					Status: {
+						select: {
+							name: 'Trade Progress'
+						}
+					},
+					Timestamp: {
+						number: firstLogEntry.timestamp
+					},
+					Date: {
+						date: {
+							start: timestampDate
+						}
+					},
+					Buyers: {
+						relation: [{ id: '60b1aa6d-381b-4528-9a41-43885725f7b2' }]
+					},
+					'Buy / Sell': {
+						select: {
+							name: 'Sell'
+						}
+					},
+					'Price List db': {
+						relation: [{ id: '13c2a9c404f780569eb7f23cfe4d548f' }]
+					}
+				}
+			};
+
+			GM_xmlhttpRequest({
+				method: 'POST',
+				url: 'https://api.notion.com/v1/pages',
+				headers: {
+					'Authorization': `Bearer ${notionApiKey}`,
+					'Content-Type': 'application/json',
+					'Notion-Version': '2022-06-28'
+				},
+				data: JSON.stringify(newTradePage),
+				onload: function(response) {
+					if (response.status === 200 || response.status === 201) {
+						const responseData = JSON.parse(response.responseText);
+						console.log(`Created new trade page in Notion: Page ID: ${responseData.id}, Name: ${newTradeName}`);
+						// Now create all item entries with the confirmed page ID
+						itemEntries.forEach(entry => {
+							createItemSendEntry(entry, responseData.id, newTradeName);
+						});
+						resolve(responseData.id);
+					} else {
+						console.error('Failed to create new trade page in Notion', response);
+						console.error('Response Text:', response.responseText);
+						reject(new Error('Failed to create trade page'));
+					}
+				},
+				onerror: function(error) {
+					console.error('Error occurred while creating new trade page in Notion', error);
+					reject(error);
+				}
+			});
+		});
+	}
+
+	function createTradeForMarketBuy(logEntry) {
+		const itemId = logEntry.data.item;
+		const quantity = logEntry.data.qty;
+		const costEach = logEntry.data.cost_each;
+		const costTotal = logEntry.data.cost_total;
+		const timestamp = logEntry.timestamp;
+		const timestampDate = new Date(timestamp * 1000).toISOString();
+
+		const matchedItem = fetchedItems.find((item) => item.idNumber === itemId);
+
+		if (!matchedItem) {
+			console.error('Invalid item ID:', itemId);
+			return;
+		}
+
+		const newTradeNumber = tradeCounter + 1;
+		const newTradeName = `trade ${newTradeNumber}`;
+		tradeCounter = newTradeNumber;
+
+		// Determine Seller ID based on itemId
+		let sellerId = '';
+		switch(itemId) {
+			case 258: case 260:
+				sellerId = '14c2a9c404f78099ad01eb5d61cd9e48'; // mex
+				break;
+			case 268: case 266: case 267:
+				sellerId = '1532a9c404f7800090ccca77e6217641'; // uk
+				break;
+			case 269: case 271:
+				sellerId = '1572a9c404f78025a30de46a3b246e54'; // arg
+				break;
+			case 274: case 276:
+				sellerId = '1572a9c404f78015accfffd25f9e7960'; // chin
+				break;
+			case 384: case 385:
+				sellerId = '1532a9c404f780159f28cf98f5f43848'; // uae
+				break;
+			case 277:
+				sellerId = '1572a9c404f7807f8454d6a419e468ea'; // jap
+				break;
+			case 281: case 282:
+				sellerId = '1572a9c404f780099ce8e988e0fa929d'; // sa
+				break;
+			case 628: case 617:
+				sellerId = '1532a9c404f780ce8ec1c515a982b3ec'; // ci
+				break;
+			case 261: case 263:
+				sellerId = '1532a9c404f780bc8f4ad8e11fe1785c'; // can
+				break;
+			case 272: case 273:
+				sellerId = '1532a9c404f7801d8f74d4cdda11cdf6'; // sw
+				break;
+			case 264:
+				sellerId = '14c2a9c404f78007af0ae2613a2527b4'; // hw
+				break;
+			default:
+				console.error('Unhandled item ID for market buy:', itemId);
+				return;
+		}
+
+		// Create the trade page in Notion
+		const newTradePage = {
+			parent: { database_id: notionTradesDBID },
+			properties: {
+				Name: { title: [{ text: { content: newTradeName } }] },
+				Timestamp: { number: timestamp },
+				Date: { date: { start: timestampDate } },
+				Status: { select: { name: 'Trade Finished' } },
+				'Buy / Sell': { select: { name: 'Buy' } },
+				Quantity: { number: quantity },
+				Price: { number: -costTotal },
+				Paid: { number: -costTotal },
+				'Price List db': { relation: [{ id: '13c2a9c404f780569eb7f23cfe4d548f' }] },
+				Sellers: { relation: [{ id: sellerId }] },
+			},
+		};
+
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: 'https://api.notion.com/v1/pages',
+			headers: {
+				Authorization: `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28',
+			},
+			data: JSON.stringify(newTradePage),
+			onload: function (response) {
+				if (response.status === 200 || response.status === 201) {
+					const responseData = JSON.parse(response.responseText);
+					console.log(`Created new market trade page in Notion: Page ID: ${responseData.id}, Name: ${newTradeName}`);
+					// Now create the item entry related to this trade
+					createItemEntryForMarketBuy(logEntry, responseData.id, newTradeName, matchedItem);
+				} else {
+					console.error('Failed to create new market trade page in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function (error) {
+				console.error('Error occurred while creating new market trade page in Notion', error);
+			},
+		});
+	}
+
+	function createItemEntryForMarketBuy(logEntry, parentPageId, tradeName, matchedItem) {
+		const quantity = logEntry.data.qty;
+		const costEach = logEntry.data.cost_each;
+		const timestamp = logEntry.timestamp;
+		const timestampDate = new Date(timestamp * 1000).toISOString();
+
+		const newItemPage = {
+			parent: { database_id: notionTradesDBID },
+			properties: {
+				Name: { title: [{ text: { content: tradeName } }] },
+				Timestamp: { number: timestamp },
+				Date: { date: { start: timestampDate } },
+				Status: { select: { name: 'Trade Finished' } },
+				'Parent item': { relation: [{ id: parentPageId }] },
+				Quantity: { number: quantity },
+				Price: { number: -costEach },
+				'Price List db': { relation: [{ id: matchedItem.pageId }] },
+			},
+		};
+
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: 'https://api.notion.com/v1/pages',
+			headers: {
+				Authorization: `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28',
+			},
+			data: JSON.stringify(newItemPage),
+			onload: function (response) {
+				if (response.status === 200 || response.status === 201) {
+					console.log('Created item entry for market buy.');
+				} else {
+					console.error('Failed to create item entry in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function (error) {
+				console.error('Error occurred while creating item entry in Notion', error);
+			},
+		});
+	}
+
+	function createTradeForAbroadBuy(logEntry) {
+		const itemId = logEntry.data.item;
+		const quantity = logEntry.data.quantity;
+		const costEach = logEntry.data.cost_each;
+		const costTotal = logEntry.data.cost_total;
+		const timestamp = logEntry.timestamp;
+		const timestampDate = new Date(timestamp * 1000).toISOString();
+
+		const matchedItem = fetchedItems.find((item) => item.idNumber === itemId);
+
+		if (!matchedItem) {
+			console.error('Invalid item ID:', itemId);
+			return;
+		}
+
+		const newTradeNumber = tradeCounter + 1;
+		const newTradeName = `trade ${newTradeNumber}`;
+		tradeCounter = newTradeNumber;
+
+		// Determine Seller ID based on itemId
+		let sellerId = '';
+		switch(itemId) {
+			case 258: case 260:
+				sellerId = '14c2a9c404f78099ad01eb5d61cd9e48'; // mex
+				break;
+			case 268: case 266: case 267:
+				sellerId = '1532a9c404f7800090ccca77e6217641'; // uk
+				break;
+			case 269: case 271:
+				sellerId = '1572a9c404f78025a30de46a3b246e54'; // arg
+				break;
+			case 274: case 276:
+				sellerId = '1572a9c404f78015accfffd25f9e7960'; // chin
+				break;
+			case 384: case 385:
+				sellerId = '1532a9c404f780159f28cf98f5f43848'; // uae
+				break;
+			case 277:
+				sellerId = '1572a9c404f7807f8454d6a419e468ea'; // jap
+				break;
+			case 281: case 282:
+				sellerId = '1572a9c404f780099ce8e988e0fa929d'; // sa
+				break;
+			case 628: case 617:
+				sellerId = '1532a9c404f780ce8ec1c515a982b3ec'; // ci
+				break;
+			case 261: case 263:
+				sellerId = '1532a9c404f780bc8f4ad8e11fe1785c'; // can
+				break;
+			case 272: case 273:
+				sellerId = '1532a9c404f7801d8f74d4cdda11cdf6'; // sw
+				break;
+			case 264:
+				sellerId = '14c2a9c404f78007af0ae2613a2527b4'; // hw
+				break;
+			default:
+				console.error('Unhandled item ID for abroad buy:', itemId);
+				return;
+		}
+
+		// Create the trade page in Notion
+		const newTradePage = {
+			parent: { database_id: notionTradesDBID },
+			properties: {
+				Name: { title: [{ text: { content: newTradeName } }] },
+				Timestamp: { number: timestamp },
+				Date: { date: { start: timestampDate } },
+				Status: { select: { name: 'Trade Finished' } },
+				'Buy / Sell': { select: { name: 'Buy' } },
+				Quantity: { number: quantity },
+				Price: { number: -costTotal },
+				Paid: { number: -costTotal },
+				'Price List db': { relation: [{ id: '13c2a9c404f780569eb7f23cfe4d548f' }] },
+				Sellers: { relation: [{ id: sellerId }] },
+			},
+		};
+
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: 'https://api.notion.com/v1/pages',
+			headers: {
+				Authorization: `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28',
+			},
+			data: JSON.stringify(newTradePage),
+			onload: function (response) {
+				if (response.status === 200 || response.status === 201) {
+					const responseData = JSON.parse(response.responseText);
+					console.log(`Created new abroad trade page in Notion: Page ID: ${responseData.id}, Name: ${newTradeName}`);
+					// Now create the item entry related to this trade
+					createItemEntryForAbroadBuy(logEntry, responseData.id, newTradeName, matchedItem);
+				} else {
+					console.error('Failed to create new abroad trade page in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function (error) {
+				console.error('Error occurred while creating new abroad trade page in Notion', error);
+			},
+		});
+	}
+
+	function createItemEntryForAbroadBuy(logEntry, parentPageId, tradeName, matchedItem) {
+		const quantity = logEntry.data.quantity;
+		const costEach = logEntry.data.cost_each;
+		const timestamp = logEntry.timestamp;
+		const timestampDate = new Date(timestamp * 1000).toISOString();
+
+		const newItemPage = {
+			parent: { database_id: notionTradesDBID },
+			properties: {
+				Name: { title: [{ text: { content: tradeName } }] },
+				Timestamp: { number: timestamp },
+				Date: { date: { start: timestampDate } },
+				Status: { select: { name: 'Trade Finished' } },
+				'Parent item': { relation: [{ id: parentPageId }] },
+				Quantity: { number: quantity },
+				Price: { number: -costEach },
+				'Price List db': { relation: [{ id: matchedItem.pageId }] },
+			},
+		};
+
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: 'https://api.notion.com/v1/pages',
+			headers: {
+				Authorization: `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28',
+			},
+			data: JSON.stringify(newItemPage),
+			onload: function (response) {
+				if (response.status === 200 || response.status === 201) {
+					console.log('Created item entry for abroad buy.');
+				} else {
+					console.error('Failed to create item entry in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function (error) {
+				console.error('Error occurred while creating item entry in Notion', error);
+			},
+		});
+	}
+
+
+	function createTradeForShopBuy(logEntry) {
+		const itemId = logEntry.data.item;
+		const quantity = logEntry.data.quantity;
+		const costEach = logEntry.data.cost_each;
+		const costTotal = logEntry.data.cost_total;
+		const timestamp = logEntry.timestamp;
+		const timestampDate = new Date(timestamp * 1000).toISOString();
+
+		const matchedItem = fetchedItems.find((item) => item.idNumber === itemId);
+
+		if (!matchedItem) {
+			console.error('Invalid item ID:', itemId);
+			return;
+		}
+
+		const newTradeNumber = tradeCounter + 1;
+		const newTradeName = `trade ${newTradeNumber}`;
+		tradeCounter = newTradeNumber;
+
+		// Create the trade page in Notion
+		const newTradePage = {
+			parent: { database_id: notionTradesDBID },
+			properties: {
+				Name: { title: [{ text: { content: newTradeName } }] },
+				Timestamp: { number: timestamp },
+				Date: { date: { start: timestampDate } },
+				Status: { select: { name: 'Trade Finished' } },
+				'Buy / Sell': { select: { name: 'Buy' } },
+				Quantity: { number: quantity },
+				Price: { number: -costTotal },
+				Paid: { number: -costTotal },
+				'Price List db': { relation: [{ id: '13c2a9c404f780569eb7f23cfe4d548f' }] },
+				Sellers: { relation: [{ id: '1532a9c404f780f7b2c8d5b28b6393f8' }] },
+			},
+		};
+
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: 'https://api.notion.com/v1/pages',
+			headers: {
+				Authorization: `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28',
+			},
+			data: JSON.stringify(newTradePage),
+			onload: function (response) {
+				if (response.status === 200 || response.status === 201) {
+					const responseData = JSON.parse(response.responseText);
+					console.log(`Created new trade page in Notion: Page ID: ${responseData.id}, Name: ${newTradeName}`);
+					// Now create the item entry related to this trade
+					createItemEntryForShopBuy(logEntry, responseData.id, newTradeName, matchedItem);
+				} else {
+					console.error('Failed to create new trade page in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function (error) {
+				console.error('Error occurred while creating new trade page in Notion', error);
+			},
+		});
+	}
+
+
+
+	function createItemEntryForShopBuy(logEntry, parentPageId, tradeName, matchedItem) {
+		const quantity = logEntry.data.quantity;
+		const costEach = logEntry.data.cost_each;
+		const timestamp = logEntry.timestamp;
+		const timestampDate = new Date(timestamp * 1000).toISOString();
+
+		const newItemPage = {
+			parent: { database_id: notionTradesDBID },
+			properties: {
+				Name: { title: [{ text: { content: tradeName } }] },
+				Timestamp: { number: timestamp },
+				Date: { date: { start: timestampDate } },
+				Status: { select: { name: 'Trade Finished' } },
+				'Parent item': { relation: [{ id: parentPageId }] },
+				Quantity: { number: quantity },
+				Price: { number: -costEach },
+				'Price List db': { relation: [{ id: matchedItem.pageId }] },
+			},
+		};
+
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: 'https://api.notion.com/v1/pages',
+			headers: {
+				Authorization: `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28',
+			},
+			data: JSON.stringify(newItemPage),
+			onload: function (response) {
+				if (response.status === 200 || response.status === 201) {
+					console.log('Created item entry for shop buy.');
+				} else {
+					console.error('Failed to create item entry in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function (error) {
+				console.error('Error occurred while creating item entry in Notion', error);
+			},
+		});
+	}
+
+
+
+
+
+
+
+
+
+
+	function updateTradeStatusToFinished(pageId, logEntry) {
+		if (!logEntry || !logEntry.timestamp) {
+			console.error('Invalid logEntry or logEntry.timestamp:', logEntry);
+			return;
+		}
+
+		console.log('Creating Flight Club money receive entry:', {
+			pageId: pageId,
+			timestamp: logEntry.timestamp,
+			amount: logEntry.data.money
+		});
+
+		const timestampDate = new Date(logEntry.timestamp * 1000).toISOString();
+		const updatePageData = {
+			properties: {
+				Status: {
+					select: {
+						name: 'Trade Finished'
+					}
+				},
+				Timestamp: {
+					number: logEntry.timestamp
+				},
+				Date: {
+					date: {
+						start: timestampDate
+					}
+				},
+				Paid: {
+					number: logEntry.data.money
+				}
+			}
+		};
+
+		GM_xmlhttpRequest({
+			method: 'PATCH',
+			url: `https://api.notion.com/v1/pages/${pageId}`,
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(updatePageData),
+			onload: function(response) {
+				if (response.status === 200 || response.status === 204) {
+					console.log(`Updated trade page status to 'Trade Finished' with ID: ${pageId}`);
+					fetchAndUpdateRelatedItemsStatus(pageId);
+				} else {
+					console.error('Failed to update trade page status in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while updating trade page status in Notion', error);
+			}
+		});
+	}
+
+
+
+
+
+
+
+
+	function fetchAndUpdateRelatedItemsStatus(tradePageId) {
+		const requestData = {
+			filter: {
+				property: 'Parent item',
+				relation: {
+					contains: tradePageId
+				}
+			}
+		};
+
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: `https://api.notion.com/v1/databases/${notionTradesDBID}/query`,
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(requestData),
+			onload: function(response) {
+				if (response.status === 200) {
+					const data = JSON.parse(response.responseText);
+					const relatedItems = data.results;
+					relatedItems.forEach(item => {
+						updateItemStatusToFinished(item.id);
+					});
+				} else {
+					console.error('Failed to fetch related items for trade page', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while fetching related items for trade page', error);
+			}
+		});
+	}
+
+	function updateItemStatusToFinished(itemId) {
+		const updateItemData = {
+			properties: {
+				Status: {
+					select: {
+						name: 'Trade Finished'
+					}
+				}
+			}
+		};
+
+		GM_xmlhttpRequest({
+			method: 'PATCH',
+			url: `https://api.notion.com/v1/pages/${itemId}`,
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(updateItemData),
+			onload: function(response) {
+				if (response.status === 200 || response.status === 204) {
+					console.log(`Updated item status to 'Trade Finished' with ID: ${itemId}`);
+				} else {
+					console.error('Failed to update item status in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while updating item status in Notion', error);
+			}
+		});
+	}
+
+	function createNewTradePage(latestTrade = null) {
+		const newTradeNumber = latestTrade ? parseInt(latestTrade.properties.Name.title[0].text.content.split(' ')[1]) + 1 : 1;
+		const newTradeName = `trade ${newTradeNumber}`;
+		tradeCounter = newTradeNumber;
+		const newTradePage = {
+			parent: { database_id: notionTradesDBID },
+			properties: {
+				Name: { title: [{ text: { content: newTradeName } }] },
+				Status: {
+					select: {
+						name: 'Trade Progress'
+					}
+				},
+				Buyers: {
+					relation: [{ id: '60b1aa6d-381b-4528-9a41-43885725f7b2' }]
+				},
+				'Buy / Sell': {
+					select: {
+						name: 'Sell'
+					}
+				},
+				'Price List db': {
+					relation: [{ id: '13c2a9c404f780569eb7f23cfe4d548f' }]
+				}
+			}
+		};
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: 'https://api.notion.com/v1/pages',
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(newTradePage),
+			onload: function(response) {
+				if (response.status === 200 || response.status === 201) {
+					const responseData = JSON.parse(response.responseText);
+					console.log(`Created new trade page in Notion: Page ID: ${responseData.id}, Name: ${newTradeName}`);
+					createdTradePageId = responseData.id;
+					fetchTornApiLogs(responseData.id, newTradeName);
+				} else {
+					console.error('Failed to create new trade page in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while creating new trade page in Notion', error);
+			}
+		});
+	}
+
+	let fetchedItems = [];
+
+	function fetchNotionItemsData(startCursor = null) {
+		const requestData = startCursor ? { start_cursor: startCursor } : {};
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: `https://api.notion.com/v1/databases/${notionItemsDBID}/query`,
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(requestData),
+			onload: function(response) {
+				if (response.status === 200) {
+					const data = JSON.parse(response.responseText);
+					data.results.forEach(item => {
+						const idNumber = item.properties['ID']?.number ?? 'N/A';
+						const pageId = item.id;
+						const sheetClubPrice = item.properties['Sheet Club Price']?.number ?? 'N/A';
+
+						fetchedItems.push({
+							idNumber: idNumber,
+							pageId: pageId,
+							sheetClubPrice: sheetClubPrice
+						});
+					});
+					if (data.has_more) {
+						fetchNotionItemsData(data.next_cursor);
+					}
+				} else {
+					console.error('Failed to fetch the Notion items database', response);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while fetching the Notion items database', error);
+			}
+		});
+	}
+
+	function createItemSendEntry(logEntry, parentPageId, tradeName) {
+		const itemId = logEntry.data.items[0].id;
+		const quantity = logEntry.data.items[0].qty;
+		const matchedItem = fetchedItems.find(item => item.idNumber === itemId);
+
+		console.log('Creating Flight Club item send entry:', {
+			itemId: itemId,
+			quantity: quantity,
+			tradeName: tradeName,
+			parentPageId: parentPageId,
+			timestamp: logEntry.timestamp
+		});
+
+		if (!matchedItem) {
+			console.error('Invalid item ID:', itemId);
+			return;
+		}
+
+		const timestampDate = new Date(logEntry.timestamp * 1000).toISOString();
+		const newItemPage = {
+			parent: { database_id: notionTradesDBID },
+			properties: {
+				Name: { title: [{ text: { content: tradeName } }] },
+				Timestamp: { number: logEntry.timestamp },
+				Status: { select: { name: 'Trade Progress' } },
+				'Parent item': {
+					relation: [{ id: parentPageId }]
+				},
+				Date: { date: { start: timestampDate } },
+				'Price List db': {
+					relation: [{ id: matchedItem.pageId }]
+				},
+				'Price': { number: matchedItem.sheetClubPrice },
+				'Quantity': { number: quantity }
+			}
+		};
+
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: 'https://api.notion.com/v1/pages',
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(newItemPage),
+			onload: function(response) {
+				if (response.status === 200 || response.status === 201) {
+					calculateAndUpdateTradeTotals(parentPageId);
+				} else {
+					console.error('Failed to create item send entry in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while creating item send entry in Notion', error);
+			}
+		});
+	}
+
+	function calculateAndUpdateTradeTotals(tradeId) {
+		const requestData = {
+			filter: {
+				property: 'Parent item',
+				relation: {
+					contains: tradeId
+				}
+			}
+		};
+
+		GM_xmlhttpRequest({
+			method: 'POST',
+			url: `https://api.notion.com/v1/databases/${notionTradesDBID}/query`,
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(requestData),
+			onload: function(response) {
+				if (response.status === 200) {
+					const data = JSON.parse(response.responseText);
+					let totalQuantity = 0;
+					let totalPrice = 0;
+
+					data.results.forEach(item => {
+						totalQuantity += item.properties.Quantity.number;
+						totalPrice += item.properties.Quantity.number * item.properties.Price.number;
+					});
+
+					updateTradeWithTotals(tradeId, totalQuantity, totalPrice);
+				} else {
+					console.error('Failed to fetch related items for trade page', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while fetching related items for trade page', error);
+			}
+		});
+	}
+
+	function updateTradeWithTotals(tradeId, totalQuantity, totalPrice) {
+		const updatePageData = {
+			properties: {
+				Quantity: {
+					number: totalQuantity
+				},
+				Price: {
+					number: totalPrice
+				}
+			}
+		};
+
+		GM_xmlhttpRequest({
+			method: 'PATCH',
+			url: `https://api.notion.com/v1/pages/${tradeId}`,
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(updatePageData),
+			onload: function(response) {
+				if (response.status === 200 || response.status === 204) {
+					console.log(`Updated trade totals for trade ID: ${tradeId}`);
+				} else {
+					console.error('Failed to update trade totals in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while updating trade totals in Notion', error);
+			}
+		});
+	}
+
+	function deleteTradePage(pageId) {
+		const deletePageData = {
+			archived: true
+		};
+		GM_xmlhttpRequest({
+			method: 'PATCH',
+			url: `https://api.notion.com/v1/pages/${pageId}`,
+			headers: {
+				'Authorization': `Bearer ${notionApiKey}`,
+				'Content-Type': 'application/json',
+				'Notion-Version': '2022-06-28'
+			},
+			data: JSON.stringify(deletePageData),
+			onload: function(response) {
+				if (response.status === 200 || response.status === 204) {
+					console.log(`Deleted trade page with ID: ${pageId}`);
+				} else {
+					console.error('Failed to delete trade page in Notion', response);
+					console.error('Response Text:', response.responseText);
+				}
+			},
+			onerror: function(error) {
+				console.error('Error occurred while deleting trade page in Notion', error);
+			}
+		});
+	}
+
+})();
