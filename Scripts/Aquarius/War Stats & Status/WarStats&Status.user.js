@@ -3,7 +3,7 @@
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
 // @version                1.5.11
-// @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
+// @icon					https://raw.githubusercontent.com/XeiDaMoKa/Torn/refs/heads/Xei/Scripts/Aquarius/War%20Stats%20%26%20Status/Zh68AGI.png
 // @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
 // @homepageURL   https://github.com/XeiDaMoKa/Torn/blob/Xei/Scripts/Aquarius/WarStats%26Status.user.js
