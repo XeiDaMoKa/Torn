@@ -2,7 +2,7 @@
 // @name                   Aquarius - War Stats & Status (WIT-Premier)
 // @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.5.11
+// @version                1.6.11
 // @icon	https://raw.githubusercontent.com/XeiDaMoKa/Torn/refs/heads/Xei/Scripts/Aquarius/War%20Stats%20%26%20Status/Zh68AGI.png
 // @match         https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
