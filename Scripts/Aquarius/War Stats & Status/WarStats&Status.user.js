@@ -1,16 +1,18 @@
 // ==UserScript==
-// @name                   Aquarius - War Stats & Status (WIT-Premier)
-// @description         Adds custom stats column from Google Sheet and customizes status text using TornStats API
+// @name                   Aquarius - War Stats & Status
+// @description         Adds custom stats column from Aquarius wartable and customizes status text using TornStats API
 // @author                 XeiDaMoKa [2373510]
-// @version                1.6.11
-// @icon	https://raw.githubusercontent.com/XeiDaMoKa/Torn/refs/heads/Xei/Scripts/Aquarius/War%20Stats%20%26%20Status/Zh68AGI.png
-// @match         https://www.torn.com/factions.php?step*
+// @version                1.6.0
+// @icon					https://xeidamoka.com/Torn/Scripts/Aquarius/AWSSlogo.jpg
+// @match                  https://www.torn.com/factions.php?step*
 // @homepageURL   https://https://xeidamoka.com/AquariusWarStats&Status
-// @homepageURL   https://github.com/XeiDaMoKa/Torn/blob/Xei/Scripts/Aquarius/War%20Stats%20%26%20Status/WarStats%26Status.user.js
-// @downloadURL     https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/War%20Stats%20%26%20Status/WarStats%26Status.user.js
-// @updateURL         https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/War%20Stats%20%26%20Status/WarStats%26Status.user.js
+// @homepageURL   https://github.com/XeiDaMoKa/Torn/blob/Xei/Scripts/Aquarius/WarStats%26Status.user.js
+// @downloadURL     https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/WarStats&Status.user.js
+// @updateURL         https://github.com/XeiDaMoKa/Torn/raw/Xei/Scripts/Aquarius/WarStats&Status.user.js
 // @supportURL        https://github.com/XeiDaMoKa/Torn/issues
-// @grant                   GM.xmlHttpRequest
+// @grant                  GM_xmlhttpRequest
+// @connect                aquarius.cosiso.nl
+// @connect                tornstats.com
 // ==/UserScript==
 
 (function() {
@@ -159,11 +161,52 @@ function updateStoredState(playerId, emoji) {
 }
 
 
+	function fetchAquariusStats() {
+		const url = 'https://aquarius.cosiso.nl/index.php/wars/estimates';
+		GM_xmlhttpRequest({
+			method: 'GET',
+			url: url,
+			onload: function(response) {
+				const parser = new DOMParser();
+				const doc = parser.parseFromString(response.responseText, 'text/html');
+				const table = doc.querySelector('#wartable');
+				playerStats = {};
+				if (table) {
+					const rows = table.querySelectorAll('tbody tr');
+					rows.forEach(row => {
+						const cells = row.querySelectorAll('td');
+						if (cells.length >= 6) {
+							// Get player name and ID from the first cell
+							const nameCell = cells[0];
+							const link = nameCell.querySelector('a[href*="XID="]');
+							if (!link) return;
+							const href = link.getAttribute('href');
+							const idMatch = href.match(/XID=(\d+)/);
+							if (!idMatch) return;
+							const playerId = idMatch[1];
+							// Get the two stat values (in millions)
+							const stat1 = parseFloat(cells[4].innerText.replace(/,/g, '')) || 0;
+							const stat2 = parseFloat(cells[5].innerText.replace(/,/g, '')) || 0;
+							const total = Math.max(stat1, stat2);
+							if (total > 0) {
+								playerStats[playerId] = { total: total * 1e6 }; // Convert to absolute value
+							}
+						}
+					});
+				}
+				updateStatsCells();
+			},
+			onerror: function(error) {
+				console.error('Error fetching Aquarius wartable:', error);
+			}
+		});
+	}
+
 	function fetchFactionData(factionId) {
 		const now = Date.now();
 		lastFetchTime = now;
 		const apiUrl = `https://www.tornstats.com/api/v2/${apiTS}/spy/faction/${factionId}`;
-		GM.xmlHttpRequest({
+		GM_xmlhttpRequest({
 			method: "GET",
 			url: apiUrl,
 			onload: function(response) {
@@ -172,7 +215,7 @@ function updateStoredState(playerId, emoji) {
 					$$(`[AWSS] API`, data);
 					membersData = data.faction.members;
 					updatePlayerStatuses();
-					fetchSheetData();
+					fetchAquariusStats();
 				} else {
 					$$$(`Failed to fetch faction data for ID ${factionId}:`, response.status);
 					scheduleNextFetchIfNeeded();
@@ -184,95 +227,6 @@ function updateStoredState(playerId, emoji) {
 			}
 		});
 	}
-
-	function fetchSheetData() {
-		$$('[AWSS] Fetching sheet data...');
-
-		const sheetName = 'Sheet1';
-		const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
-		GM.xmlHttpRequest({
-			method: 'GET',
-			url: `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-			onload: function(response) {
-				if (response.status === 200) {
-					const data = parseCSV(response.responseText);
-					processSheetData(data);
-				} else {
-					console.error('Failed to fetch sheet data');
-				}
-			},
-			onerror: function(error) {
-				console.error('Error fetching sheet data:', error);
-			}
-		});
-	}
-
-function processSheetData(data) {
-    playerStats = {};
-
-    // Get the header row (first row)
-    const headers = data[0];
-    console.log("Headers:", headers);
-
-    // Find the indices of the relevant columns by their headers
-    const nameIndex = headers.indexOf("Name");
-    const strengthIndex = headers.indexOf("Strength");
-    const defenseIndex = headers.indexOf("Defense");
-    const speedIndex = headers.indexOf("Speed");
-    const dexterityIndex = headers.indexOf("Dexterity");
-    const totalIndex = headers.indexOf("Total");
-
-    // Log if any index is not found
-    if (nameIndex === -1) console.error("Column 'Name' not found");
-    if (strengthIndex === -1) console.error("Column 'Strength' not found");
-    if (defenseIndex === -1) console.error("Column 'Defense' not found");
-    if (speedIndex === -1) console.error("Column 'Speed' not found");
-    if (dexterityIndex === -1) console.error("Column 'Dexterity' not found");
-    if (totalIndex === -1) console.error("Column 'Total' not found");
-
-    // Process each row after the header
-    for (let i = 1; i < data.length; i++) {
-        const row = data[i];
-        console.log("Processing row:", row);
-
-        // Ensure that the row has all the necessary columns
-        if (row.length >= headers.length) {
-            const nameWithId = row[nameIndex];
-            console.log("Name with ID:", nameWithId);
-
-            // Extract values for each stat, defaulting to 0 if not found or empty
-            const strength = parseFloat(row[strengthIndex]?.replace(/,/g, '') || '0');
-            const defense = parseFloat(row[defenseIndex]?.replace(/,/g, '') || '0');
-            const speed = parseFloat(row[speedIndex]?.replace(/,/g, '') || '0');
-            const dexterity = parseFloat(row[dexterityIndex]?.replace(/,/g, '') || '0');
-            const total = parseFloat(row[totalIndex]?.replace(/,/g, '') || '0');
-
-            // Extract the ID from the nameWithId field
-            const match = nameWithId ? nameWithId.match(/\[(\d+)\]/) : null;
-            if (match) {
-                const id = match[1];
-                playerStats[id] = {
-                    strength,
-                    defense,
-                    speed,
-                    dexterity,
-                    total
-                };
-            } else {
-                console.error("No ID match found for:", nameWithId);
-            }
-        } else {
-            console.error("Row has fewer columns than expected:", row);
-        }
-    }
-
-    // Update the stats cells (assumed to be defined elsewhere in your script)
-    updateStatsCells();
-}
-
-
-
-
 
 	function updatePlayerStatuses() {
 		const playerNodes = document.querySelectorAll('.enemy');
@@ -543,14 +497,7 @@ function updateStatsCells() {
                 if (playerStats[playerId]) {
                     const stats = playerStats[playerId];
                     statsCell.textContent = formatTotal(stats.total);
-                    const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    const tooltipContent = `
-                        Str: ${formatNumber(stats.strength)}<br>
-                        Def: ${formatNumber(stats.defense)}<br>
-                        Spd: ${formatNumber(stats.speed)}<br>
-                        Dex: ${formatNumber(stats.dexterity)}
-                    `;
-                    statsCell.setAttribute('title', tooltipContent);
+                    statsCell.setAttribute('title', `Total: ${formatTotal(stats.total)}`);
                     statsCell.classList.add('t-tooltip');
                     statsCell.classList.add('t-tooltip-up');
                 } else {
@@ -853,4 +800,37 @@ tooltipStyle.textContent = `
     }
 `;
 document.head.appendChild(tooltipStyle);
+
+// Add Reset War Stats & Status button after DOMContentLoaded
+function addResetApiKeyButton() {
+    // Find the Leave Faction button
+    const leaveBtn = document.querySelector('a.quit-job');
+    if (!leaveBtn) return;
+    // Clone the button
+    const resetBtn = leaveBtn.cloneNode(true);
+    // Change its id, class, and text
+    resetBtn.classList.remove('quit-job');
+    resetBtn.classList.add('reset-warstats');
+    resetBtn.setAttribute('href', '#');
+    resetBtn.setAttribute('aria-labelledby', 'reset-warstats');
+    resetBtn.querySelector('.link-icon-svg').classList.remove('quit-job');
+    resetBtn.querySelector('span#quit-job').id = 'reset-warstats';
+    resetBtn.querySelector('span#reset-warstats').textContent = 'Reset War Stats & Status';
+    // Add click handler
+    resetBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.removeItem('tornStatsApiKey');
+        alert('TornStats API key removed. Please reload the page.');
+        location.reload();
+    });
+    // Insert after the original button
+    leaveBtn.parentNode.insertBefore(resetBtn, leaveBtn.nextSibling);
+}
+
+// Wait for DOMContentLoaded and add the button
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', addResetApiKeyButton);
+} else {
+    addResetApiKeyButton();
+}
 })(); // Ensure the IIFE is properly closed
