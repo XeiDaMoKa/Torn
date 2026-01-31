@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Torn - Vault Tracker
-// @version      1.0
-// @description  Keeps track of yours and your spouse's transactions. Fixed reset behavior.
+// @version      1.3
+// @description  Keeps track of yours and your spouse's transactions. Setup now asks for YOUR balance.
 // @author       XeiDaMoKa [2373510]
 // @match        https://www.torn.com/properties.php*
 // ==/UserScript==
@@ -51,20 +51,22 @@
         let data = loadTrackerData();
         const currentVaultTotal = parseInt(totalSpan.innerText.replace(/[$,\s+]/g, '').split('=')[0]) || 0;
 
-        // 1. Initial Setup
+        // 1. Initial Setup (NOW ASKS FOR YOUR BALANCE)
         if (!data) {
-            let input = prompt("Enter Spouse Vault Balance:", "0");
+            let input = prompt("Enter YOUR Vault Balance:", "0");
             if (input === null) {
                 setupDismissed = true;
                 isProcessing = false;
                 return;
             }
-            const spouseBalance = parseInt(input.replace(/,/g, '')) || 0;
+            const myBalance = parseInt(input.replace(/,/g, '')) || 0;
             const myName = document.querySelector('script[playername]')?.getAttribute('playername') || "Unknown";
+
+            // Logic Flip: Spouse gets the remainder of the vault
             data = {
                 myName: myName,
-                myValue: currentVaultTotal - spouseBalance,
-                spouseValue: spouseBalance,
+                myValue: myBalance,
+                spouseValue: currentVaultTotal - myBalance,
                 lastTransactionId: entries[0].getAttribute('transaction_id'),
                 previousAnchorId: entries[0].getAttribute('transaction_id')
             };
